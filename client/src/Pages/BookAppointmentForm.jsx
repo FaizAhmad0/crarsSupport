@@ -111,6 +111,30 @@ const BookAppointmentForm = () => {
         >
           <Input placeholder="Enter your name" />
         </Form.Item>
+        {/* Platform Field */}
+        <Form.Item
+          name="platform"
+          label="Platform"
+          rules={[{ required: true, message: "Please select a platform!" }]}
+        >
+          <Select
+            placeholder="Choose a platform"
+            onChange={handlePlatformChange}
+          >
+            <Option value="amazon">Amazon</Option>
+            <Option value="website">Website</Option>
+            <Option value="dispatch">Dispatch</Option>
+            <Option value="accounts">Accounts</Option>
+          </Select>
+        </Form.Item>
+        {/* Enrollment Field */}
+        <Form.Item
+          name="enrollment"
+          label="Enrollment ID"
+          rules={[{ required: true, message: "Enrollment ID is required!" }]}
+        >
+          <Input placeholder="Auto-filled or enter manually" />
+        </Form.Item>
 
         {/* Number Field */}
         <Form.Item
@@ -153,23 +177,6 @@ const BookAppointmentForm = () => {
           <Input placeholder="Enter the subject" />
         </Form.Item>
 
-        {/* Platform Field */}
-        <Form.Item
-          name="platform"
-          label="Platform"
-          rules={[{ required: true, message: "Please select a platform!" }]}
-        >
-          <Select
-            placeholder="Choose a platform"
-            onChange={handlePlatformChange}
-          >
-            <Option value="amazon">Amazon</Option>
-            <Option value="website">Website</Option>
-            <Option value="dispatch">Dispatch</Option>
-            <Option value="accounts">Accounts</Option>
-          </Select>
-        </Form.Item>
-
         {/* Date Field */}
         <Form.Item
           name="date"
@@ -186,15 +193,6 @@ const BookAppointmentForm = () => {
           rules={[{ required: true, message: "Please select a time!" }]}
         >
           <TimePicker className="w-full" format="HH:mm" />
-        </Form.Item>
-
-        {/* Enrollment Field */}
-        <Form.Item
-          name="enrollment"
-          label="Enrollment ID"
-          rules={[{ required: true, message: "Enrollment ID is required!" }]}
-        >
-          <Input placeholder="Auto-filled or enter manually" />
         </Form.Item>
 
         {/* Manager Field */}

@@ -10,6 +10,8 @@ import { Skeleton, Row, Col } from "antd";
 import { AmazonOutlined, GlobalOutlined } from "@ant-design/icons";
 
 import UserLayout from "../Layouts/UserLayout";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import axios from "axios";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
@@ -47,6 +49,11 @@ const UserDash = () => {
     };
 
     fetchUserDetails();
+    AOS.init({
+      duration: 1200,
+      once: false,
+    });
+    AOS.refresh();
   }, []);
 
   const calculateDaysRemaining = (registrationDate) => {
@@ -127,7 +134,10 @@ const UserDash = () => {
           }
           bordered={false}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            data-aos="fade-up"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
             {/* Personal Information */}
             <Card
               hoverable
@@ -154,7 +164,10 @@ const UserDash = () => {
               hoverable
               className="border-0 shadow-md transition-transform transform hover:-translate-y-2"
             >
-              <div className="p-4 rounded-lg bg-gradient-to-r from-blue-800 to-blue-300">
+              <div
+                data-aos="fade-up"
+                className="p-4 rounded-lg bg-gradient-to-r from-blue-800 to-blue-300"
+              >
                 <Title
                   level={4}
                   className="text-white flex items-center space-x-2 mb-0"
@@ -163,7 +176,7 @@ const UserDash = () => {
                   <span className="text-white">Amazon Details</span>
                 </Title>
               </div>
-              <div className="p-4">
+              <div data-aos="fade-up" className="p-4">
                 <Space direction="vertical" size="small">
                   <Text strong>Enrollment ID:</Text>
                   <Text>{user.enrollmentIdAmazon}</Text>

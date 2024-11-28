@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Skeleton, Table, Tag, Button, message } from "antd";
+import { Skeleton, Table, Tag, message, Select, Input } from "antd";
 import SupervisorLayout from "../Layouts/SupervisorLayout";
+
+const { Option } = Select;
+const { Search } = Input;
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const SuppAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState(""); // Search state
+  const [dateFilter, setDateFilter] = useState("all"); // Date filter state
 
   const fetchAppointments = async () => {
     const name = localStorage.getItem("name");
@@ -38,7 +43,7 @@ const SuppAppointments = () => {
       setAppointments(sortedAppointments || []);
     } catch (error) {
       console.error(
-        "Error fetching appointments:",
+        "Error fetching appointments: ",
         error.response?.data?.message || error.message
       );
     } finally {
@@ -49,6 +54,52 @@ const SuppAppointments = () => {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  const handleDateFilterChange = (value) => {
+    setDateFilter(value);
+  };
+
+  const filterByDate = (appointment) => {
+    if (dateFilter === "all") return true;
+
+    const now = new Date();
+    const appointmentDate = new Date(appointment.date);
+
+    switch (dateFilter) {
+      case "today":
+        return appointmentDate.toDateString() === new Date().toDateString();
+      case "yesterday":
+        const yesterday = new Date();
+        yesterday.setDate(now.getDate() - 1);
+        return appointmentDate.toDateString() === yesterday.toDateString();
+      case "thisWeek":
+        const startOfWeek = new Date();
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        return appointmentDate >= startOfWeek;
+      case "thisMonth":
+        return (
+          appointmentDate.getMonth() === now.getMonth() &&
+          appointmentDate.getFullYear() === now.getFullYear()
+        );
+      case "thisYear":
+        return appointmentDate.getFullYear() === now.getFullYear();
+      default:
+        return true;
+    }
+  };
+
+  const filteredAppointments = appointments
+    .filter(
+      (appointment) =>
+        appointment.enrollment
+          ?.toLowerCase()
+          .includes(searchText.toLowerCase()) ||
+        appointment.appointmentId
+          ?.toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
+    )
+    .filter(filterByDate);
 
   const handleMarkAsComplete = async (appointmentId) => {
     try {
@@ -77,6 +128,7 @@ const SuppAppointments = () => {
       );
     }
   };
+  console.log(handleMarkAsComplete);
 
   const columns = [
     {
@@ -163,15 +215,35 @@ const SuppAppointments = () => {
           <h1 className="text-2xl pt-4 font-bold text-white">
             All Appointments
           </h1>
+          <div className="mt-4 flex items-center space-x-4">
+            <Search
+              placeholder="Search by Enrollment ID or Appointment ID"
+              allowClear
+              onChange={(e) => setSearchText(e.target.value)} // Update on input change
+              style={{ maxWidth: "400px" }}
+            />
+            <Select
+              defaultValue="all"
+              style={{ width: 200 }}
+              onChange={handleDateFilterChange}
+            >
+              <Option value="all">All Dates</Option>
+              <Option value="today">Today</Option>
+              <Option value="yesterday">Yesterday</Option>
+              <Option value="thisWeek">This Week</Option>
+              <Option value="thisMonth">This Month</Option>
+              <Option value="thisYear">This Year</Option>
+            </Select>
+          </div>
         </div>
 
         {loading ? (
           <Skeleton active />
-        ) : appointments.length > 0 ? (
+        ) : filteredAppointments.length > 0 ? (
           <Table
             className="w-full cursor-pointer"
             columns={columns}
-            dataSource={appointments}
+            dataSource={filteredAppointments}
             rowKey="appointmentId"
             pagination={{ pageSize: 10 }}
             bordered

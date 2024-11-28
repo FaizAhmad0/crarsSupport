@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Skeleton, Table, Tag, Button, message } from "antd";
+import { Skeleton, Table, Tag, Button, message, Select, Input } from "antd";
 import AdminLayout from "../Layouts/AdminLayout";
+
+const { Option } = Select;
+const { Search } = Input;
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const AllAppointment = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState(""); // Search state
+  const [dateFilter, setDateFilter] = useState("all"); // Date filter state
+  const [statusFilter, setStatusFilter] = useState(""); // Status filter state
 
   const fetchAppointments = async () => {
     const name = localStorage.getItem("name");
@@ -49,6 +55,59 @@ const AllAppointment = () => {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+  const handleDateFilterChange = (value) => {
+    setDateFilter(value);
+  };
+
+  const handleStatusFilterChange = (value) => {
+    setStatusFilter(value);
+  };
+
+  const filterByDate = (appointment) => {
+    if (dateFilter === "all") return true;
+
+    const now = new Date();
+    const appointmentDate = new Date(appointment.date);
+
+    switch (dateFilter) {
+      case "today":
+        return appointmentDate.toDateString() === new Date().toDateString();
+      case "yesterday":
+        const yesterday = new Date();
+        yesterday.setDate(now.getDate() - 1);
+        return appointmentDate.toDateString() === yesterday.toDateString();
+      case "thisWeek":
+        const startOfWeek = new Date();
+        startOfWeek.setDate(now.getDate() - now.getDay());
+        return appointmentDate >= startOfWeek;
+      case "thisMonth":
+        return (
+          appointmentDate.getMonth() === now.getMonth() &&
+          appointmentDate.getFullYear() === now.getFullYear()
+        );
+      case "thisYear":
+        return appointmentDate.getFullYear() === now.getFullYear();
+      default:
+        return true;
+    }
+  };
+
+  const filteredAppointments = appointments
+    .filter(
+      (appointment) =>
+        appointment.enrollment
+          ?.toLowerCase()
+          .includes(searchText.toLowerCase()) ||
+        appointment.appointmentId
+          ?.toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
+    )
+    .filter(filterByDate)
+    .filter((appointment) =>
+      statusFilter ? appointment.status.toLowerCase() === statusFilter : true
+    );
 
   const handleMarkAsComplete = async (appointmentId) => {
     try {
@@ -138,7 +197,7 @@ const AllAppointment = () => {
       filters: [
         { text: "Pending", value: "pending" },
         { text: "Confirmed", value: "confirmed" },
-        { text: "Completed", value: "Completed" },
+        { text: "Completed", value: "completed" },
         { text: "Cancelled", value: "cancelled" },
       ],
       onFilter: (value, record) => record.status === value,
@@ -180,15 +239,45 @@ const AllAppointment = () => {
           <h1 className="text-2xl pt-4 font-bold text-white">
             All Appointments
           </h1>
+          <div className="mt-4 flex items-center space-x-4">
+            <Search
+              placeholder="Search by Enrollment ID or Appointment ID"
+              allowClear
+              onChange={(e) => setSearchText(e.target.value)} // Update on input change
+              style={{ maxWidth: "400px" }}
+            />
+            <Select
+              defaultValue="all"
+              style={{ width: 200 }}
+              onChange={handleDateFilterChange}
+            >
+              <Option value="all">All Dates</Option>
+              <Option value="today">Today</Option>
+              <Option value="yesterday">Yesterday</Option>
+              <Option value="thisWeek">This Week</Option>
+              <Option value="thisMonth">This Month</Option>
+              <Option value="thisYear">This Year</Option>
+            </Select>
+            <Select
+              placeholder="Filter by Status"
+              style={{ width: 200 }}
+              onChange={handleStatusFilterChange}
+            >
+              <Option value="">All Statuses</Option>
+              <Option value="pending">Pending</Option>
+              <Option value="completed">Completed</Option>
+              <Option value="cancelled">Cancelled</Option>
+            </Select>
+          </div>
         </div>
 
         {loading ? (
           <Skeleton active />
-        ) : appointments.length > 0 ? (
+        ) : filteredAppointments.length > 0 ? (
           <Table
             className="w-full cursor-pointer"
             columns={columns}
-            dataSource={appointments}
+            dataSource={filteredAppointments}
             rowKey="appointmentId"
             pagination={{ pageSize: 10 }}
             bordered

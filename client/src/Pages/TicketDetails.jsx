@@ -11,10 +11,10 @@ const { TextArea } = Input;
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const TicketDetails = () => {
-  const { ticketId } = useParams(); // Get the ticketId from the URL params
-  const [tickets, setTickets] = useState([]); // Treat ticket as an array
+  const { ticketId } = useParams();
+  const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState(""); // To handle user input for ticket response
+  const [response, setResponse] = useState("");
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
@@ -27,7 +27,7 @@ const TicketDetails = () => {
             params: { ticketId },
           }
         );
-        setTickets(response.data.ticket || []); // Ensure it's an array
+        setTickets(response.data.ticket || []);
       } catch (error) {
         console.error("Error fetching ticket details:", error.message);
       } finally {
@@ -48,12 +48,12 @@ const TicketDetails = () => {
       const token = localStorage.getItem("token");
       await axios.post(
         `${backendUrl}/user/commenttoticket`,
-        { ticketId, response, name }, // Ensure `comment` field matches the backend
+        { ticketId, response, name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       message.success("Response submitted successfully!");
-      setResponse(""); // Clear the textarea
-      window.location.reload(); // Reload to fetch new comments
+      setResponse("");
+      window.location.reload();
     } catch (error) {
       console.error("Error submitting response:", error.message);
       message.error("Failed to submit the response. Please try again.");
@@ -67,97 +67,96 @@ const TicketDetails = () => {
 
   return (
     <UserLayout>
-      <div className="p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Ticket Details</h1>
-        {tickets.map((ticket) => (
-          <Card
-            key={ticket.ticketId}
-            className="mb-2"
-            title={`Ticket ID: ${ticket.ticketId}`}
-            bordered
-          >
-            <p>
-              <strong>Service:</strong> {ticket.service}
-            </p>
-            <p>
-              <strong>Status:</strong>{" "}
-              <Tag
-                color={
-                  ticket.status === "Open"
-                    ? "green"
-                    : ticket.status === "Close"
-                    ? "red"
-                    : "orange"
-                }
-              >
-                {ticket.status}
-              </Tag>
-            </p>
-            <p>
-              <strong>Priority:</strong>{" "}
-              <Tag color="blue">{ticket.priority}</Tag>
-            </p>
-            <p>
-              <strong>Description:</strong> {ticket.description}
-            </p>
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(ticket.createdAt).toLocaleDateString()}
-            </p>
-
-            {/* Display Comments */}
-          </Card>
-        ))}
-
-        {/* Add Comment Section */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-2">Add Comment</h2>
-          <TextArea
-            rows={4}
-            value={response}
-            onChange={(e) => setResponse(e.target.value)}
-            placeholder="Enter your response here..."
-            className="mb-4"
-          />
-          <Button
-            type="primary"
-            onClick={handleResponseSubmit}
-            className="w-32 mb-8"
-          >
-            Submit
-          </Button>
-        </div>
-        <div>
-          {tickets.map((ticket) => (
-            <Card key={ticket.ticketId} className="mb-6" bordered>
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold mb-2">Comments</h3>
-                {ticket.comments.length > 0 ? (
-                  <List
-                    dataSource={ticket.comments}
-                    renderItem={(comment) => (
-                      <List.Item>
-                        <div className="flex items-center w-full">
-                          <Avatar icon={<UserOutlined />} className="mr-3" />
-                          <div className="flex-grow">
-                            <p className="font-medium text-sm inline-block mr-2">
-                              {comment.name}:
-                            </p>
-                            <span className="text-gray-600 text-sm inline-block">
-                              {comment.comment}
-                            </span>
-                          </div>
-                          <p className="text-xs text-gray-400 ml-auto">
-                            {new Date(comment.date).toLocaleString()}
-                          </p>
-                        </div>
-                      </List.Item>
-                    )}
-                  />
-                ) : (
-                  <p className="text-gray-500">No comments yet.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6 bg-white rounded-lg shadow-md">
+        {/* Left Column (Comments Section) */}
+        <div className="lg:col-span-3">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-4">Add Comment</h2>
+            <TextArea
+              rows={4}
+              value={response}
+              onChange={(e) => setResponse(e.target.value)}
+              placeholder="Enter your response here..."
+              className="mb-4"
+            />
+            <Button
+              type="primary"
+              onClick={handleResponseSubmit}
+              className="w-32"
+            >
+              Submit
+            </Button>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Comments</h3>
+            {tickets[0]?.comments?.length > 0 ? (
+              <List
+                dataSource={tickets[0].comments.slice().reverse()} // Reverse the order
+                renderItem={(comment) => (
+                  <List.Item>
+                    <div className="flex items-start w-full">
+                      <Avatar icon={<UserOutlined />} className="mr-3 mt-1" />
+                      <div className="flex-grow">
+                        <p className="font-medium text-sm mb-1">
+                          {comment.name}
+                        </p>
+                        <p className="text-gray-600 text-sm">
+                          {comment.comment}
+                        </p>
+                      </div>
+                      <p className="text-xs text-gray-400 ml-auto mt-1">
+                        {new Date(comment.date).toLocaleString()}
+                      </p>
+                    </div>
+                  </List.Item>
                 )}
-              </div>
+              />
+            ) : (
+              <p className="text-gray-500">No comments yet.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column (Ticket Details) */}
+        <div className="lg:col-span-1">
+          {tickets.map((ticket) => (
+            <Card
+              key={ticket.ticketId}
+              className="mb-4"
+              title="Ticket Details"
+              bordered
+            >
+              <p>
+                <strong>Ticket ID:</strong> TCK{ticket.ticketId}
+              </p>
+              <p>
+                <strong>Service:</strong> {ticket.service}
+              </p>
+              <p>
+                <strong>Status:</strong>{" "}
+                <Tag
+                  color={
+                    ticket.status === "Open"
+                      ? "green"
+                      : ticket.status === "Close"
+                      ? "red"
+                      : "orange"
+                  }
+                >
+                  {ticket.status}
+                </Tag>
+              </p>
+              <p>
+                <strong>Priority:</strong>{" "}
+                <Tag color="blue">{ticket.priority}</Tag>
+              </p>
+              <p>
+                <strong>Description:</strong> {ticket.description}
+              </p>
+              <p>
+                <strong>Date:</strong>{" "}
+                {new Date(ticket.createdAt).toLocaleDateString()}
+              </p>
             </Card>
           ))}
         </div>

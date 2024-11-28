@@ -10,6 +10,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const { Option } = Select;
 
 const RaiseTicketForm = () => {
+  const role = localStorage.getItem("role");
   const [form] = Form.useForm();
   const navigate = useNavigate(); // React Router's useNavigate for navigation
 
@@ -20,6 +21,14 @@ const RaiseTicketForm = () => {
     });
     AOS.refresh();
   }, []);
+
+  const handleBackClick = () => {
+    if (role === "user") {
+      navigate("/userdash");
+    } else {
+      navigate("/managerdash");
+    }
+  };
 
   // Handle Service Selection
   const handleServiceChange = (value) => {
@@ -77,7 +86,7 @@ const RaiseTicketForm = () => {
       {/* Back Button */}
       <div
         className="flex items-center mb-4 cursor-pointer"
-        onClick={() => navigate("/userdash")} // Navigate to /userdash
+        onClick={handleBackClick} // Navigate to /userdash
       >
         <ArrowBack fontSize="medium" className="text-blue-600 mr-2" />
         <span className="text-blue-600 font-medium">Back</span>

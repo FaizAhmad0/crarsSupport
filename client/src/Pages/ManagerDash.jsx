@@ -3,7 +3,11 @@ import ManagerLayout from "../Layouts/ManagerLayout";
 import { Typography, Card, message, Skeleton, Row, Col } from "antd";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import AssignmentLateOutlinedIcon from "@mui/icons-material/AssignmentLateOutlined"; // New Icon for Non-Completed Appointments
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined"; // New Icon for Open Tickets
 import axios from "axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -63,20 +67,21 @@ const ManagerDash = () => {
     };
 
     fetchData();
+
+    AOS.init({
+      duration: 1200,
+      once: false,
+    });
+    AOS.refresh();
   }, [backendUrl]);
 
   if (loading) {
     return (
       <ManagerLayout>
         <div className="p-4 space-y-6">
-          {/* Skeleton for User Details */}
-          <div className="flex items-center space-x-4">
-            <Skeleton.Avatar active size="large" />
-            <Skeleton.Input active style={{ width: 200 }} />
-          </div>
+          <Skeleton.Avatar active size="large" />
+          <Skeleton.Input active style={{ width: 200 }} />
           <Skeleton paragraph={{ rows: 4 }} active />
-
-          {/* Skeleton for Cards */}
           <Row gutter={[16, 16]} className="mt-6">
             <Col xs={24} sm={12} lg={12}>
               <Skeleton.Button active block style={{ height: 150 }} />
@@ -103,7 +108,6 @@ const ManagerDash = () => {
   return (
     <ManagerLayout>
       <div className="p-4 space-y-6">
-        {/* User Details */}
         {user && (
           <>
             <div className="flex items-center space-x-4">
@@ -120,7 +124,11 @@ const ManagerDash = () => {
                 Welcome, {localStorage.getItem("name")}
               </h3>
             </div>
-            <Card className="shadow-md rounded-lg" bordered={false}>
+            <Card
+              data-aos="fade-up"
+              className="shadow-md rounded-lg"
+              bordered={false}
+            >
               <div className="space-y-2">
                 <Text strong>Name:</Text> {user.name}
                 <br />
@@ -142,9 +150,10 @@ const ManagerDash = () => {
         )}
 
         <Row gutter={[16, 16]} className="mt-6">
-          {/* Appointments Count */}
+          {/* Total Appointments */}
           <Col xs={24} sm={12} lg={12}>
             <Card
+              data-aos="fade-up"
               onClick={() => {
                 navigate("/manager-appointments");
               }}
@@ -172,9 +181,10 @@ const ManagerDash = () => {
             </Card>
           </Col>
 
-          {/* Tickets Count */}
+          {/* Total Tickets */}
           <Col xs={24} sm={12} lg={12}>
             <Card
+              data-aos="fade-up"
               onClick={() => {
                 navigate("/manager-tickets");
               }}
@@ -188,6 +198,61 @@ const ManagerDash = () => {
                 <div>
                   <Text className="text-lg font-bold block text-white">
                     Tickets: {tickets.length}
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+
+          {/* Non-Completed Appointments */}
+          <Col xs={24} sm={12} lg={12}>
+            <Card
+              onClick={() => {
+                navigate("/manager-appointments");
+              }}
+              data-aos="fade-up"
+              className="bg-gradient-to-r from-orange-800 to-orange-400 text-white shadow-lg rounded-lg cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110"
+              bordered={false}
+            >
+              <div className="flex items-center space-x-4">
+                <AssignmentLateOutlinedIcon
+                  style={{ fontSize: "40px", color: "white" }}
+                />
+                <div>
+                  <Text className="text-lg font-bold block text-white">
+                    Not Completed Appointments:{" "}
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status !== "Completed"
+                      ).length
+                    }
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+
+          {/* Open Tickets */}
+          <Col xs={24} sm={12} lg={12}>
+            <Card
+              onClick={() => {
+                navigate("/manager-tickets");
+              }}
+              data-aos="fade-up"
+              className="bg-gradient-to-r from-red-800 to-red-400 text-white shadow-lg rounded-lg cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110"
+              bordered={false}
+            >
+              <div className="flex items-center space-x-4">
+                <ErrorOutlineOutlinedIcon
+                  style={{ fontSize: "40px", color: "white" }}
+                />
+                <div>
+                  <Text className="text-lg font-bold block text-white">
+                    Open Tickets:{" "}
+                    {
+                      tickets.filter((ticket) => ticket.status === "Open")
+                        .length
+                    }
                   </Text>
                 </div>
               </div>

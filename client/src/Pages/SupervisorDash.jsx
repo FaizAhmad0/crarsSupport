@@ -3,8 +3,12 @@ import SupervisorLayout from "../Layouts/SupervisorLayout";
 import { Typography, Card, message, Skeleton, Row, Col } from "antd";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import AssignmentLateOutlinedIcon from "@mui/icons-material/AssignmentLateOutlined";
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import axios from "axios";
 import { UserOutlined } from "@ant-design/icons";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
@@ -63,20 +67,22 @@ const SupervisorDash = () => {
     };
 
     fetchData();
+    AOS.init({
+      duration: 1200,
+      once: false,
+    });
+    AOS.refresh();
   }, [backendUrl]);
 
   if (loading) {
     return (
       <SupervisorLayout>
         <div className="p-4 space-y-6">
-          {/* Skeleton for User Details */}
           <div className="flex items-center space-x-4">
             <Skeleton.Avatar active size="large" />
             <Skeleton.Input active style={{ width: 200 }} />
           </div>
           <Skeleton paragraph={{ rows: 4 }} active />
-
-          {/* Skeleton for Cards */}
           <Row gutter={[16, 16]} className="mt-6">
             <Col xs={24} sm={12} lg={12}>
               <Skeleton.Button active block style={{ height: 150 }} />
@@ -103,7 +109,6 @@ const SupervisorDash = () => {
   return (
     <SupervisorLayout>
       <div className="p-4 space-y-6">
-        {/* User Details */}
         {user && (
           <>
             <div className="flex items-center space-x-4">
@@ -120,7 +125,11 @@ const SupervisorDash = () => {
                 Welcome, {localStorage.getItem("name")}
               </h3>
             </div>
-            <Card className="shadow-md rounded-lg" bordered={false}>
+            <Card
+              data-aos="fade-up"
+              className="shadow-md rounded-lg"
+              bordered={false}
+            >
               <div className="space-y-2">
                 <Text strong>Name:</Text> {user.name}
                 <br />
@@ -142,9 +151,9 @@ const SupervisorDash = () => {
         )}
 
         <Row gutter={[16, 16]} className="mt-6">
-          {/* Appointments Count */}
           <Col xs={24} sm={12} lg={12}>
             <Card
+              data-aos="fade-up"
               onClick={() => {
                 navigate("/sup-appointment");
               }}
@@ -172,9 +181,9 @@ const SupervisorDash = () => {
             </Card>
           </Col>
 
-          {/* Tickets Count */}
           <Col xs={24} sm={12} lg={12}>
             <Card
+              data-aos="fade-up"
               onClick={() => {
                 navigate("/sup-tickets");
               }}
@@ -188,6 +197,59 @@ const SupervisorDash = () => {
                 <div>
                   <Text className="text-lg font-bold block text-white">
                     Tickets: {tickets.length}
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+
+          <Col xs={24} sm={12} lg={12}>
+            <Card
+              onClick={() => {
+                navigate("/sup-appointment");
+              }}
+              data-aos="fade-up"
+              className="bg-gradient-to-r from-red-800 to-red-400 text-white shadow-lg rounded-lg cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110"
+              bordered={false}
+            >
+              <div className="flex items-center space-x-4">
+                <AssignmentLateOutlinedIcon
+                  style={{ fontSize: "40px", color: "white" }}
+                />
+                <div>
+                  <Text className="text-lg font-bold block text-white">
+                    Pending Appointments:{" "}
+                    {
+                      appointments.filter(
+                        (appointment) => appointment.status !== "Completed"
+                      ).length
+                    }
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+
+          <Col xs={24} sm={12} lg={12}>
+            <Card
+              onClick={() => {
+                navigate("/sup-tickets");
+              }}
+              data-aos="fade-up"
+              className="bg-gradient-to-r from-orange-800 to-orange-400 text-white shadow-lg rounded-lg cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:brightness-110"
+              bordered={false}
+            >
+              <div className="flex items-center space-x-4">
+                <AssignmentTurnedInOutlinedIcon
+                  style={{ fontSize: "40px", color: "white" }}
+                />
+                <div>
+                  <Text className="text-lg font-bold block text-white">
+                    Open Tickets:{" "}
+                    {
+                      tickets.filter((ticket) => ticket.status === "Open")
+                        .length
+                    }
                   </Text>
                 </div>
               </div>
