@@ -20,7 +20,7 @@ const UserPrivateRoute = () => {
   }, [token, role, errorShown]);
 
   if (redirect) {
-    return <Navigate to="/" replace />; // Redirect to /
+    return <Navigate to="/login" replace />; // Redirect to /
   }
 
   return <Outlet />; // Render child routes

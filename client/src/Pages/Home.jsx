@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
+
   const handleAppointmentClick = () => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -22,6 +24,15 @@ const Home = () => {
       once: false,
     });
     AOS.refresh();
+    if (role === "user") {
+      navigate("/userdash");
+    } else if (role === "manager") {
+      navigate("/managerdash");
+    } else if (role === "admin") {
+      navigate("/admindash");
+    } else if (role === "supervisor") {
+      navigate("/supervisordash");
+    }
   }, []);
   return (
     <div className="mt-8">

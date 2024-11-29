@@ -5,7 +5,6 @@ module.exports = async (req, res) => {
   try {
     // Query to find all users with the role "manager"
     const managers = await User.find({ role: "manager" });
-
     // Check if any managers were found
     if (!managers || managers.length === 0) {
       return res.status(404).json({ message: "No managers found" });
