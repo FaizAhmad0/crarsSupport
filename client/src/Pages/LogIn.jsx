@@ -29,6 +29,7 @@ const LogIn = () => {
       if (response.status === 200) {
         message.success(response.data.message);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("phone", response.data.phone);
         localStorage.setItem("name", response.data.name);
         localStorage.setItem("email", response.data.email);
         localStorage.setItem("uid", response.data.uid);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -20,6 +20,7 @@ const { Option } = Select;
 const BookAppointmentForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [managers, setManagers] = useState([]); // State for managers list
 
   useEffect(() => {
     AOS.init({ duration: 1200, once: false });
@@ -30,7 +31,30 @@ const BookAppointmentForm = () => {
       name: localStorage.getItem("name") || "",
       email: localStorage.getItem("email") || "",
       uid: localStorage.getItem("uid") || "",
+      number: localStorage.getItem("phone") || "",
     });
+
+    // Fetch managers from the backend
+    const fetchManagers = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`${backendUrl}/user/getallmanager`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setManagers(response.data.managers || []); // Safely update the state
+        } else {
+          message.error("Failed to fetch managers.");
+        }
+      } catch (error) {
+        console.error("Error fetching managers:", error.message);
+        message.error("Unable to fetch managers. Please try again later.");
+      }
+    };
+
+    fetchManagers();
   }, [form]);
 
   // Handle Platform Change
@@ -71,7 +95,7 @@ const BookAppointmentForm = () => {
         message.error("Something went wrong. Please try again.");
       }
     } catch (error) {
-      console.error("Error booking appointment:", error);
+      console.error("Error booking appointment:", error.message);
       message.error("Failed to book the appointment. Please try again later.");
     }
   };
@@ -109,8 +133,9 @@ const BookAppointmentForm = () => {
           label="Name"
           rules={[{ required: true, message: "Please enter your name!" }]}
         >
-          <Input placeholder="Enter your name" />
+          <Input placeholder="Name is auto-filled" disabled />
         </Form.Item>
+
         {/* Platform Field */}
         <Form.Item
           name="platform"
@@ -127,6 +152,7 @@ const BookAppointmentForm = () => {
             <Option value="accounts">Accounts</Option>
           </Select>
         </Form.Item>
+
         {/* Enrollment Field */}
         <Form.Item
           name="enrollment"
@@ -136,15 +162,13 @@ const BookAppointmentForm = () => {
           <Input placeholder="Auto-filled or enter manually" />
         </Form.Item>
 
-        {/* Number Field */}
+        {/* Phone Field */}
         <Form.Item
           name="number"
           label="Phone Number"
-          rules={[
-            { required: true, message: "Please enter your phone number!" },
-          ]}
+          rules={[{ required: true, message: "Phone number is required!" }]}
         >
-          <Input placeholder="Enter your phone number" />
+          <Input placeholder="Phone number is auto-filled" disabled />
         </Form.Item>
 
         {/* Email Field */}
@@ -156,7 +180,7 @@ const BookAppointmentForm = () => {
             { type: "email", message: "Please enter a valid email!" },
           ]}
         >
-          <Input placeholder="Enter your email" />
+          <Input placeholder="Email is auto-filled" disabled />
         </Form.Item>
 
         {/* UID Field */}
@@ -165,7 +189,25 @@ const BookAppointmentForm = () => {
           label="UID"
           rules={[{ required: true, message: "UID is required!" }]}
         >
-          <Input placeholder="Your UID will be auto-filled" />
+          <Input placeholder="UID is auto-filled" disabled />
+        </Form.Item>
+        {/* Manager Field */}
+        <Form.Item
+          name="manager"
+          label="Manager"
+          rules={[{ required: true, message: "Please select a manager!" }]}
+        >
+          <Select placeholder="Choose your manager">
+            {managers.length > 0 ? (
+              managers.map((manager) => (
+                <Option key={manager.id} value={manager.name}>
+                  {manager.name}
+                </Option>
+              ))
+            ) : (
+              <Option disabled>Loading managers...</Option>
+            )}
+          </Select>
         </Form.Item>
 
         {/* Subject Field */}
@@ -193,19 +235,6 @@ const BookAppointmentForm = () => {
           rules={[{ required: true, message: "Please select a time!" }]}
         >
           <TimePicker className="w-full" format="HH:mm" />
-        </Form.Item>
-
-        {/* Manager Field */}
-        <Form.Item
-          name="manager"
-          label="Manager"
-          rules={[{ required: true, message: "Please select a manager!" }]}
-        >
-          <Select placeholder="Choose your manager">
-            <Option value="TL1">TL1</Option>
-            <Option value="manager2">Manager 2</Option>
-            <Option value="manager3">Manager 3</Option>
-          </Select>
         </Form.Item>
 
         {/* Description Field */}

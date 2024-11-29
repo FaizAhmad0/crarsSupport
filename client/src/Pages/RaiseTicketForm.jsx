@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Select, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material"; // Material Icon
@@ -13,6 +13,7 @@ const RaiseTicketForm = () => {
   const role = localStorage.getItem("role");
   const [form] = Form.useForm();
   const navigate = useNavigate(); // React Router's useNavigate for navigation
+  const [managers, setManagers] = useState([]); // Initialize as an empty array
 
   useEffect(() => {
     AOS.init({
@@ -20,6 +21,33 @@ const RaiseTicketForm = () => {
       once: false,
     });
     AOS.refresh();
+  }, []);
+
+  // Fetch all managers from the backend
+  useEffect(() => {
+    const fetchManagers = async () => {
+      const token = localStorage.getItem("token"); // Authorization token
+      try {
+        const response = await axios.get(`${backendUrl}/user/getallmanager`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.status === 200) {
+          setManagers(response.data.managers || []); // Safely update state
+        } else {
+          message.error("Failed to fetch managers.");
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching managers:",
+          error.response?.data?.message || error.message
+        );
+        message.error("Unable to fetch managers. Please try again later.");
+      }
+    };
+
+    fetchManagers();
   }, []);
 
   const handleBackClick = () => {
@@ -154,9 +182,15 @@ const RaiseTicketForm = () => {
           rules={[{ required: true, message: "Please select a manager!" }]}
         >
           <Select placeholder="Choose your manager" className="w-full">
-            <Option value="TL1">TL1</Option>
-            <Option value="manager2">Manager 2</Option>
-            <Option value="manager3">Manager 3</Option>
+            {managers.length > 0 ? (
+              managers.map((manager) => (
+                <Option key={manager.id} value={manager.name}>
+                  {manager.name}
+                </Option>
+              ))
+            ) : (
+              <Option disabled>Loading managers...</Option>
+            )}
           </Select>
         </Form.Item>
 

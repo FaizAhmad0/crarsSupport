@@ -8,15 +8,17 @@ const newAppointment = require("../controller/newAppointment");
 const getAllUserAppointment = require("../controller/getAllUserAppointment");
 const addAppointmentReview = require("../controller/addAppointmentReview");
 const getUserDetails = require("../controller/getUserDetails");
+const getAllManagers = require("../controller/getAllManagers");
 
 // Route for login
+router.get("/getallmanager", getAllManagers);
 router.post("/newticket", createNewTicket);
 router.get("/getalltickets", getAllUserTicket);
 router.get("/getticketdetails", getSpecificTicket);
 router.post("/commenttoticket", addCommnetToTicket);
-router.post("/bookappointment",newAppointment);
-router.get("/getallappointments",getAllUserAppointment);
-router.post("/submitreview",addAppointmentReview);
-router.get("/:uid",getUserDetails)
+router.post("/bookappointment", newAppointment);
+router.get("/getallappointments", getAllUserAppointment);
+router.post("/submitreview", addAppointmentReview);
+router.get("/:uid", getUserDetails);
 
 module.exports = router;

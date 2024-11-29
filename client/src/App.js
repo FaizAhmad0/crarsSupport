@@ -19,6 +19,10 @@ import AdminTckDetails from "./Pages/AdminTckDetails";
 import SupervisorDash from "./Pages/SupervisorDash";
 import SuppTickets from "./Pages/SuppTickets";
 import SuppAppointments from "./Pages/SuppAppointments";
+import UserPrivateRoute from "./Components/UserPrivateRoute";
+import ManagerPrivateRoute from "./Components/ManagerPrivateRoute";
+import AdminPrivateRoute from "./Components/AdminPrivateRoute";
+import SupPrivateRoute from "./Components/SupPrivateRoute";
 function App() {
   return (
     <>
@@ -26,29 +30,37 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/login" exact element={<LogIn />} />
-          <Route path="/userdash" exact element={<UserDash />} />
           <Route path="/raise-ticket" exact element={<RaiseTicketForm />} />
-          <Route path="/user-tickets" exact element={<UserTickets />} />
-          <Route path="/ticket/:ticketId" element={<TicketDetails />} />
-          <Route path="/book-appointment" element={<BookAppointmentForm />} />
-          <Route path="/appointments" element={<UserAppointment />} />
-          <Route path="/managerdash" element={<ManagerDash />} />
-          <Route path="/manager-tickets" element={<ManagerTickets />} />
-          <Route
-            path="/managerticket/:ticketId"
-            element={<ManagerTicketDetails />}
-          />
-          <Route
-            path="/manager-appointments"
-            element={<ManagerAppointment />}
-          />
-          <Route path="/admindash" element={<AdminDash />} />
-          <Route path="/admin-tickets" element={<AllTickets />} />
-          <Route path="/admin-appointment" element={<AllAppointment />} />
-          <Route path="/admin/:ticketId" element={<AdminTckDetails />} />
-          <Route path="/supervisordash" element={<SupervisorDash />} />
-          <Route path="/sup-tickets" element={<SuppTickets />} />
-          <Route path="/sup-appointment" element={<SuppAppointments />} />
+          <Route element={<UserPrivateRoute />}>
+            <Route path="/userdash" exact element={<UserDash />} />
+            <Route path="/user-tickets" exact element={<UserTickets />} />
+            <Route path="/ticket/:ticketId" element={<TicketDetails />} />
+            <Route path="/book-appointment" element={<BookAppointmentForm />} />
+            <Route path="/appointments" element={<UserAppointment />} />
+          </Route>
+          <Route element={<ManagerPrivateRoute />}>
+            <Route path="/managerdash" element={<ManagerDash />} />
+            <Route path="/manager-tickets" element={<ManagerTickets />} />
+            <Route
+              path="/managerticket/:ticketId"
+              element={<ManagerTicketDetails />}
+            />
+            <Route
+              path="/manager-appointments"
+              element={<ManagerAppointment />}
+            />
+          </Route>
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="/admindash" element={<AdminDash />} />
+            <Route path="/admin-tickets" element={<AllTickets />} />
+            <Route path="/admin-appointment" element={<AllAppointment />} />
+            <Route path="/admin/:ticketId" element={<AdminTckDetails />} />
+          </Route>
+          <Route element={<SupPrivateRoute />}>
+            <Route path="/supervisordash" element={<SupervisorDash />} />
+            <Route path="/sup-tickets" element={<SuppTickets />} />
+            <Route path="/sup-appointment" element={<SuppAppointments />} />
+          </Route>
         </Routes>
       </Router>
     </>

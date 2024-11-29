@@ -23,6 +23,7 @@ module.exports = async (req, res) => {
       message: "Logged in successfully!",
       id: user._id,
       role: user.role,
+      phone: user.primaryContact,
     });
   } catch (error) {
     console.error("Error during user login:", error);
