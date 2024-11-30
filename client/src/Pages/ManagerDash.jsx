@@ -197,7 +197,15 @@ const ManagerDash = () => {
                 />
                 <div>
                   <Text className="text-lg font-bold block text-white">
-                    Tickets: {tickets.length}
+                    Total Tickets: {tickets.length}
+                  </Text>
+                  <Text className="text-sm block text-white">
+                    Completed:{" "}
+                    {
+                      tickets.filter(
+                        (appointment) => appointment.status !== "Open"
+                      ).length
+                    }
                   </Text>
                 </div>
               </div>
@@ -220,7 +228,7 @@ const ManagerDash = () => {
                 />
                 <div>
                   <Text className="text-lg font-bold block text-white">
-                    Not Completed Appointments:{" "}
+                    Pending Appointments:{" "}
                     {
                       appointments.filter(
                         (appointment) => appointment.status !== "Completed"
@@ -248,7 +256,7 @@ const ManagerDash = () => {
                 />
                 <div>
                   <Text className="text-lg font-bold block text-white">
-                    Open Tickets:{" "}
+                    Pending Tickets:{" "}
                     {
                       tickets.filter((ticket) => ticket.status === "Open")
                         .length

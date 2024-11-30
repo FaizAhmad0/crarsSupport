@@ -5,11 +5,13 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "main": "index.js"
+    "main": "index.js",
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@adiwajshing/baileys": "^5.0.0",
     "@api/doubletick": "file:.api/apis/doubletick",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
