@@ -6,12 +6,12 @@ const bodyParser = require("body-parser");
 const loginRoute = require("./route/LoginRoute");
 const userRoute = require("./route/userRoute");
 const managerRoute = require("./route/managerRoute");
-const adminRoute = require("./route/adminRoute")
+const adminRoute = require("./route/adminRoute");
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8500;
 
 // Middleware
 app.use(
@@ -26,9 +26,9 @@ app.use(bodyParser.json());
 
 // Mount the login route
 app.use("/login", loginRoute);
-app.use("/user",userRoute);
-app.use("/manager",managerRoute);
-app.use("/admin",adminRoute)
+app.use("/user", userRoute);
+app.use("/manager", managerRoute);
+app.use("/admin", adminRoute);
 
 mongoose
   .connect(process.env.MONGO_URI)
