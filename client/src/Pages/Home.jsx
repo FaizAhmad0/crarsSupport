@@ -70,7 +70,7 @@ const Home = () => {
             Book Appointment
           </Button>
           <p className="text-base text-black-900 mb-6">
-            Welcome to the Crarts Decor Support Portal! Designed to streamline
+            Welcome to the Saumic Craft Support Portal! Designed to streamline
             your experience, our portal empowers users to raise tickets for any
             concerns or queries and book appointments with their designated
             managers effortlessly. Whether you need assistance with Amazon

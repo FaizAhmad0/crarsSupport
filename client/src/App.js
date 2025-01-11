@@ -31,12 +31,12 @@ const WeekdayRouteWrapper = ({ children }) => {
     return (
       <div className="flex items-center justify-center min-h-screen text-white">
         <div className="bg-white bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 text-black shadow-xl rounded-lg p-8 max-w-md mx-auto">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            Dear Valued User,
+          <h2 className="text-2xl font-bold mb-4 text-center text-white bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse shadow-lg shadow-pink-500/50">
+            Dear {localStorage.getItem("name")},
           </h2>
           <p className="text-lg mb-4">
             We regret to inform you that the support portal is currently closed
-            because{" "}
+            because today is{" "}
             <span className="font-bold">
               {today === 0 ? "Sunday" : "Saturday"}
             </span>
@@ -46,7 +46,7 @@ const WeekdayRouteWrapper = ({ children }) => {
             Please note that the portal will reopen on the next business day.
           </p>
           <p className="text-lg mb-6">Thank you for your cooperation.</p>
-          <div className="text-center border-t pt-4">
+          <div className=" border-t pt-2">
             <p className="font-semibold">Sincerely,</p>
             <p className="font-bold">Saumic Craft Support Team</p>
           </div>
