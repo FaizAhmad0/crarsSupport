@@ -12,8 +12,8 @@ const getAllManagers = require("../controller/getAllManagers");
 
 // Route for login
 router.get("/getallmanager", getAllManagers);
-router.post("/newticket", createNewTicket);
 router.get("/getalltickets", getAllUserTicket);
+router.post("/newticket", createNewTicket);
 router.get("/getticketdetails", getSpecificTicket);
 router.post("/commenttoticket", addCommnetToTicket);
 router.post("/bookappointment", newAppointment);
