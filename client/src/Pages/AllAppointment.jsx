@@ -169,12 +169,28 @@ const AllAppointment = () => {
       dataIndex: "time",
       key: "time",
       render: (text) => {
-        const options = {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        };
-        return new Intl.DateTimeFormat("en-US", options).format(new Date(text));
+        if (!text) {
+          return "N/A"; // Handle empty or null time values
+        }
+
+        // Ensure time string is valid and fallback if parsing fails
+        try {
+          const [hours, minutes] = text.split(":");
+          if (!hours || !minutes) throw new Error("Invalid time format");
+
+          // Format the time with Intl.DateTimeFormat
+          const date = new Date();
+          date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+          const options = {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          };
+          return new Intl.DateTimeFormat("en-US", options).format(date);
+        } catch (error) {
+          console.error("Error parsing time:", text, error.message);
+          return "Invalid Time";
+        }
       },
     },
     {
@@ -189,6 +205,7 @@ const AllAppointment = () => {
       dataIndex: "subject",
       key: "subject",
       ellipsis: true,
+      width: 200,
     },
     {
       title: "Status",
@@ -281,7 +298,7 @@ const AllAppointment = () => {
             rowKey="appointmentId"
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ x: true }} // Enables table scrolling for small screens
+            scroll={{ x: "max-content", y: 400 }}
           />
         ) : (
           <p className="text-center text-gray-500">No appointments found.</p>

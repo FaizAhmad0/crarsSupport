@@ -93,7 +93,7 @@ const AdminLayout = ({ children }) => {
         <Navbar toggleSidebar={toggleSidebar} />
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-y-auto mt-16 lg:mt-0">
+        <main className="flex-1 p-4 lg:p-6 overflow-x-auto overflow-y-auto  mt-16 lg:mt-0">
           {children}
         </main>
       </div>

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  DatePicker,
-  TimePicker,
-  message,
-} from "antd";
+import { Form, Input, Button, Select, DatePicker, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import AOS from "aos";
@@ -17,16 +9,59 @@ import axios from "axios";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const { Option } = Select;
 
+const predefinedTimes = [
+  "10:05",
+  "10:15",
+  "10:25",
+  "10:35",
+  "10:45",
+  "14:05",
+  "14:15",
+  "14:25",
+  "14:35",
+  "14:45",
+];
+
 const BookAppointmentForm = () => {
+  const [appointments, setAppointments] = useState([]);
+  const [managers, setManagers] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedManager, setSelectedManager] = useState(null);
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [managers, setManagers] = useState([]); // State for managers list
+
+  const fetchAppointments = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axios.get(
+        `${backendUrl}/admin/getallappointments`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const sortedAppointments = response.data.appointments.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+
+      setAppointments(sortedAppointments || []);
+    } catch (error) {
+      console.error(
+        "Error fetching appointments:",
+        error.response?.data?.message || error.message
+      );
+    }
+  };
 
   useEffect(() => {
+    fetchAppointments();
     AOS.init({ duration: 1200, once: false });
     AOS.refresh();
 
-    // Pre-fill form fields from localStorage
     form.setFieldsValue({
       name: localStorage.getItem("name") || "",
       email: localStorage.getItem("email") || "",
@@ -34,7 +69,6 @@ const BookAppointmentForm = () => {
       number: localStorage.getItem("phone") || "",
     });
 
-    // Fetch managers from the backend
     const fetchManagers = async () => {
       const token = localStorage.getItem("token");
       try {
@@ -44,7 +78,7 @@ const BookAppointmentForm = () => {
           },
         });
         if (response.status === 200) {
-          setManagers(response.data.managers || []); // Safely update the state
+          setManagers(response.data.managers || []);
         } else {
           message.error("Failed to fetch managers.");
         }
@@ -57,7 +91,6 @@ const BookAppointmentForm = () => {
     fetchManagers();
   }, [form]);
 
-  // Handle Platform Change
   const handlePlatformChange = (value) => {
     if (value === "amazon") {
       form.setFieldValue(
@@ -70,11 +103,20 @@ const BookAppointmentForm = () => {
         localStorage.getItem("enrollmentIdWebsite")
       );
     } else {
-      form.setFieldValue("enrollment", ""); // Allow manual input for other platforms
+      form.setFieldValue("enrollment", "");
     }
   };
 
-  // Handle Form Submission
+  const handleDateChange = (date) => {
+    setSelectedDate(date ? date.format("YYYY-MM-DD") : null);
+    form.setFieldValue("time", null); // Reset the time field when the date changes
+  };
+
+  const handleManagerChange = (manager) => {
+    setSelectedManager(manager);
+    form.setFieldValue("time", null); // Reset the time field when the manager changes
+  };
+
   const onFinish = async (values) => {
     const formattedValues = {
       ...values,
@@ -100,12 +142,24 @@ const BookAppointmentForm = () => {
     }
   };
 
+  const getDisabledTimes = () => {
+    if (!selectedDate || !selectedManager) return [];
+    return appointments
+      .filter(
+        (appointment) =>
+          appointment.date === selectedDate &&
+          appointment.manager === selectedManager
+      )
+      .map((appointment) => appointment.time);
+  };
+
+  const disabledTimes = getDisabledTimes();
+
   return (
     <div
       data-aos="fade-up"
       className="w-full mt-4 max-w-lg mx-auto p-6 sm:p-8 bg-white rounded-lg shadow-md"
     >
-      {/* Back Button */}
       <div
         className="flex items-center mb-4 cursor-pointer"
         onClick={() => navigate("/userdash")}
@@ -127,7 +181,6 @@ const BookAppointmentForm = () => {
       </h3>
 
       <Form form={form} layout="vertical" onFinish={onFinish}>
-        {/* Name Field */}
         <Form.Item
           name="name"
           label="Name"
@@ -136,7 +189,6 @@ const BookAppointmentForm = () => {
           <Input placeholder="Name is auto-filled" disabled />
         </Form.Item>
 
-        {/* Platform Field */}
         <Form.Item
           name="platform"
           label="Platform"
@@ -153,7 +205,6 @@ const BookAppointmentForm = () => {
           </Select>
         </Form.Item>
 
-        {/* Enrollment Field */}
         <Form.Item
           name="enrollment"
           label="Enrollment ID"
@@ -162,7 +213,6 @@ const BookAppointmentForm = () => {
           <Input placeholder="Auto-filled or enter manually" />
         </Form.Item>
 
-        {/* Phone Field */}
         <Form.Item
           name="number"
           label="Phone Number"
@@ -171,7 +221,6 @@ const BookAppointmentForm = () => {
           <Input placeholder="Phone number is auto-filled" disabled />
         </Form.Item>
 
-        {/* Email Field */}
         <Form.Item
           name="email"
           label="Email"
@@ -183,7 +232,6 @@ const BookAppointmentForm = () => {
           <Input placeholder="Email is auto-filled" disabled />
         </Form.Item>
 
-        {/* UID Field */}
         <Form.Item
           name="uid"
           label="UID"
@@ -191,13 +239,16 @@ const BookAppointmentForm = () => {
         >
           <Input placeholder="UID is auto-filled" disabled />
         </Form.Item>
-        {/* Manager Field */}
+
         <Form.Item
           name="manager"
           label="Manager"
           rules={[{ required: true, message: "Please select a manager!" }]}
         >
-          <Select placeholder="Choose your manager">
+          <Select
+            placeholder="Choose your manager"
+            onChange={handleManagerChange}
+          >
             {managers.length > 0 ? (
               managers.map((manager) => (
                 <Option key={manager.id} value={manager.name}>
@@ -210,7 +261,6 @@ const BookAppointmentForm = () => {
           </Select>
         </Form.Item>
 
-        {/* Subject Field */}
         <Form.Item
           name="subject"
           label="Subject"
@@ -219,25 +269,32 @@ const BookAppointmentForm = () => {
           <Input placeholder="Enter the subject" />
         </Form.Item>
 
-        {/* Date Field */}
         <Form.Item
           name="date"
           label="Date"
           rules={[{ required: true, message: "Please select a date!" }]}
         >
-          <DatePicker className="w-full" />
+          <DatePicker className="w-full" onChange={handleDateChange} />
         </Form.Item>
 
-        {/* Time Field */}
         <Form.Item
           name="time"
           label="Time"
           rules={[{ required: true, message: "Please select a time!" }]}
         >
-          <TimePicker className="w-full" format="HH:mm" />
+          <Select placeholder="Choose a time">
+            {predefinedTimes.map((time) => (
+              <Option
+                key={time}
+                value={time}
+                disabled={disabledTimes.includes(time)}
+              >
+                {time}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
-        {/* Description Field */}
         <Form.Item
           name="description"
           label="Description"
@@ -250,7 +307,6 @@ const BookAppointmentForm = () => {
           />
         </Form.Item>
 
-        {/* Submit Button */}
         <Form.Item>
           <Button
             type="primary"
