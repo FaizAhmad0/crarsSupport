@@ -26,6 +26,7 @@ const RaiseTicketForm = () => {
   // Fetch all managers from the backend
   useEffect(() => {
     const fetchManagers = async () => {
+      const role = localStorage.getItem("role");
       const token = localStorage.getItem("token"); // Authorization token
       try {
         const response = await axios.get(`${backendUrl}/user/getallmanager`, {
@@ -96,7 +97,12 @@ const RaiseTicketForm = () => {
       if (response.status === 201 || response.status === 200) {
         message.success("Ticket created successfully!");
         form.resetFields();
-        navigate("/user-tickets");
+        // navigate("/user-tickets");
+        if (role === "manager") {
+          navigate("/manager-tickets");
+        } else {
+          navigate("/user-tickets");
+        }
       } else {
         message.error("Something went wrong. Please try again.");
       }
