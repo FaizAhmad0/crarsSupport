@@ -120,7 +120,7 @@ const RaiseTicketForm = () => {
       {/* Back Button */}
       <div
         className="flex items-center mb-4 cursor-pointer"
-        onClick={handleBackClick} // Navigate to /userdash
+        onClick={handleBackClick}
       >
         <ArrowBack fontSize="medium" className="text-blue-600 mr-2" />
         <span className="text-blue-600 font-medium">Back</span>

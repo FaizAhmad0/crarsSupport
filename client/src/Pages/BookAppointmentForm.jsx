@@ -274,7 +274,14 @@ const BookAppointmentForm = () => {
           label="Date"
           rules={[{ required: true, message: "Please select a date!" }]}
         >
-          <DatePicker className="w-full" onChange={handleDateChange} />
+          <DatePicker
+            className="w-full"
+            onChange={handleDateChange}
+            disabledDate={
+              (current) =>
+                current && (current.day() === 0 || current.day() === 6) // Disables Sundays (0) and Saturdays (6)
+            }
+          />
         </Form.Item>
 
         <Form.Item
