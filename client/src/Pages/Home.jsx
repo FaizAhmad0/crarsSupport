@@ -18,6 +18,7 @@ const Home = () => {
       navigate("/login");
     }
   };
+
   useEffect(() => {
     AOS.init({
       duration: 1200,
@@ -34,6 +35,7 @@ const Home = () => {
       navigate("/supervisordash");
     }
   }, []);
+
   return (
     <div className="mt-8">
       <Navbar />
@@ -85,46 +87,30 @@ const Home = () => {
       </div>
       <div className="mt-10 p-4 bg-gray-50 shadow-lg rounded-md">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            data-aos="fade-up"
-            className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300 h-72"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-blue-800">
-              Video 1
-            </h3>
-            <p className="text-gray-700">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex et,
-              consequatur reiciendis, nemo fugiat, labore repellat quaerat
-              maxime quae cum quis quasi enim eaque.
-            </p>
-          </div>
-          <div
-            data-aos="fade-up"
-            className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300 h-72"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-blue-800">
-              Video 2
-            </h3>
-            <p className="text-gray-700">
-              Corporis accusamus suscipit esse velit laborum corrupti cumque
-              facilis explicabo dolor dolorum nostrum, aperiam id quis ullam
-              amet quaerat voluptas.
-            </p>
-          </div>
-
-          <div
-            data-aos="fade-up"
-            className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl transition-shadow duration-300 h-72"
-          >
-            <h3 className="text-xl font-semibold mb-4 text-blue-800">
-              Video 3
-            </h3>
-            <p className="text-gray-700">
-              Deserunt illum repellat, soluta assumenda alias eligendi accusamus
-              repudiandae porro eaque possimus. Nam sed autem labore numquam
-              similique neque.
-            </p>
-          </div>
+          <iframe
+            sandbox="allow-same-origin allow-scripts"
+            src="https://drive.google.com/file/d/1vGs4zzudQQqVtwInFR_rvA1jBPRjd4ZA/preview"
+            width="100%"
+            height="220"
+            allow="autoplay"
+            className="rounded-lg"
+          ></iframe>
+          <iframe
+            sandbox="allow-same-origin allow-scripts"
+            src="https://drive.google.com/file/d/1gN4kGZQOTaL4NDkN6hjzwDzbIqiHn4gF/preview"
+            width="100%"
+            height="220"
+            allow="autoplay"
+            className="rounded-lg"
+          ></iframe>
+          <iframe
+            sandbox="allow-same-origin allow-scripts"
+            src="https://drive.google.com/file/d/10mT5cnmy2E-7IAYjjc5zBqYkn0uuvzcD/preview"
+            width="100%"
+            height="220"
+            allow="autoplay"
+            className="rounded-lg"
+          ></iframe>
         </div>
       </div>
       <Footer />
