@@ -99,7 +99,7 @@ const RaiseTicketForm = () => {
         form.resetFields();
         // navigate("/user-tickets");
         if (role === "manager") {
-          navigate("/manager-tickets");
+          navigate("/manager-raisedtickets");
         } else {
           navigate("/user-tickets");
         }

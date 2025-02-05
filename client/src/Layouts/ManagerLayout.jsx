@@ -69,6 +69,11 @@ const ManagerLayout = ({ children }) => {
               path: "/raise-ticket",
             },
             {
+              name: "Raised Tickets",
+              icon: <ConfirmationNumberIcon />,
+              path: "/manager-raisedtickets",
+            },
+            {
               name: "Logout",
               icon: <LogoutIcon />,
               path: "/",

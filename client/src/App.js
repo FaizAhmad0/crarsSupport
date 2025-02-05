@@ -24,6 +24,7 @@ import UserPrivateRoute from "./Components/UserPrivateRoute";
 import ManagerPrivateRoute from "./Components/ManagerPrivateRoute";
 import AdminPrivateRoute from "./Components/AdminPrivateRoute";
 import SupPrivateRoute from "./Components/SupPrivateRoute";
+import ManagerRaisedTicket from "./Pages/ManagerRaisedTicket";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
           <Route element={<ManagerPrivateRoute />}>
             <Route path="/managerdash" element={<ManagerDash />} />
             <Route path="/manager-tickets" element={<ManagerTickets />} />
+            <Route
+              path="/manager-raisedtickets"
+              element={<ManagerRaisedTicket />}
+            />
             <Route
               path="/managerticket/:ticketId"
               element={<ManagerTicketDetails />}
