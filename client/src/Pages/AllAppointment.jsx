@@ -231,6 +231,27 @@ const AllAppointment = () => {
       },
     },
     {
+      title: "Review",
+      key: "action",
+      render: (_, record) => {
+        // Check if the appointment has a userReview
+        const hasReview =
+          record.userReview &&
+          record.userReview.rating !== 0 &&
+          record.userReview.comment.trim() !== "";
+
+        return hasReview ? (
+          // If review exists, display the existing rating and message with a checkmark icon
+          <div className="flex items-center font-semibold space-x-2">
+            {record.userReview.comment}
+          </div>
+        ) : (
+          // If no review, show the "Add Review" button
+          <div className="flex items-center ">N/A</div>
+        );
+      },
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => {
@@ -298,7 +319,7 @@ const AllAppointment = () => {
             rowKey="appointmentId"
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ x: "max-content", y: 400 }}
+            scroll={{ x: true, y: 400 }} // Ensures horizontal scrolling when needed
           />
         ) : (
           <p className="text-center text-gray-500">No appointments found.</p>

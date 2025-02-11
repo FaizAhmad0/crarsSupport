@@ -200,6 +200,27 @@ const ManagerAppointment = () => {
       ellipsis: true,
     },
     {
+      title: "Review",
+      key: "action",
+      render: (_, record) => {
+        // Check if the appointment has a userReview
+        const hasReview =
+          record.userReview &&
+          record.userReview.rating !== 0 &&
+          record.userReview.comment.trim() !== "";
+
+        return hasReview ? (
+          // If review exists, display the existing rating and message with a checkmark icon
+          <div className="flex pl-8 items-center font-semibold space-x-2">
+            {record.userReview.comment}
+          </div>
+        ) : (
+          // If no review, show the "Add Review" button
+          <div className="flex items-center">N/A</div>
+        );
+      },
+    },
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",

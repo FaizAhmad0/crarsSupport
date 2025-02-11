@@ -211,8 +211,8 @@ const UserAppointment = () => {
 
         return hasReview ? (
           // If review exists, display the existing rating and message with a checkmark icon
-          <div className="flex pl-8 items-center space-x-2">
-            <CheckCircle style={{ color: "green" }} />
+          <div className="flex pl-8 items-center font-semibold space-x-2">
+            {record.userReview.comment}
           </div>
         ) : (
           // If no review, show the "Add Review" button
