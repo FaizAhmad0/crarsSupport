@@ -133,7 +133,10 @@ const AllTickets = () => {
           text: "Waiting for manager reply",
           value: "Waiting for manager reply",
         },
-        { text: "Waiting for user reply", value: "Waiting for user reply" },
+        {
+          text: "Waiting for customer reply",
+          value: "Waiting for customer reply",
+        },
       ],
       onFilter: (value, record) => record.status === value,
       render: (status) => {

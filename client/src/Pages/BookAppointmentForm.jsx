@@ -23,6 +23,17 @@ const predefinedTimes = [
 ];
 
 const BookAppointmentForm = () => {
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  const currentTime = getCurrentTime();
   const [appointments, setAppointments] = useState([]);
   const [managers, setManagers] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -277,9 +288,11 @@ const BookAppointmentForm = () => {
           <DatePicker
             className="w-full"
             onChange={handleDateChange}
-            disabledDate={
-              (current) =>
-                current && (current.day() === 0 || current.day() === 6) // Disables Sundays (0) and Saturdays (6)
+            disabledDate={(current) =>
+              current &&
+              (current.isBefore(new Date(), "day") ||
+                current.day() === 0 ||
+                current.day() === 6)
             }
           />
         </Form.Item>
@@ -294,7 +307,7 @@ const BookAppointmentForm = () => {
               <Option
                 key={time}
                 value={time}
-                disabled={disabledTimes.includes(time)}
+                disabled={disabledTimes.includes(time) || time < currentTime}
               >
                 {time}
               </Option>

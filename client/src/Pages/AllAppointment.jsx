@@ -211,13 +211,13 @@ const AllAppointment = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      filters: [
-        { text: "Pending", value: "pending" },
-        { text: "Confirmed", value: "confirmed" },
-        { text: "Completed", value: "completed" },
-        { text: "Cancelled", value: "cancelled" },
-      ],
-      onFilter: (value, record) => record.status === value,
+      // filters: [
+      //   { text: "Pending", value: "pending" },
+      //   { text: "Confirmed", value: "confirmed" },
+      //   { text: "Completed", value: "completed" },
+      //   { text: "Cancelled", value: "cancelled" },
+      // ],
+      // onFilter: (value, record) => record.status === value,
       render: (status) => {
         const color =
           status === "confirmed"
@@ -304,7 +304,6 @@ const AllAppointment = () => {
               <Option value="">All Statuses</Option>
               <Option value="pending">Pending</Option>
               <Option value="completed">Completed</Option>
-              <Option value="cancelled">Cancelled</Option>
             </Select>
           </div>
         </div>

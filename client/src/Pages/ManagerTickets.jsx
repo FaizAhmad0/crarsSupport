@@ -131,12 +131,14 @@ const ManagerTickets = () => {
       key: "status",
       filters: [
         { text: "Open", value: "Open" },
-        { text: "Close", value: "Close" },
         {
           text: "Waiting for manager reply",
           value: "Waiting for manager reply",
         },
-        { text: "Waiting for user reply", value: "Waiting for user reply" },
+        {
+          text: "Waiting for customer reply",
+          value: "Waiting for customer reply",
+        },
       ],
       onFilter: (value, record) => record.status === value,
       render: (status) => {

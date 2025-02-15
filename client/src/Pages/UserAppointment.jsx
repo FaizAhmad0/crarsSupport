@@ -181,10 +181,8 @@ const UserAppointment = () => {
       dataIndex: "status",
       key: "status",
       filters: [
-        { text: "Pending", value: "pending" },
-        { text: "Confirmed", value: "confirmed" },
+        { text: "Pending", value: "Pending" },
         { text: "Completed", value: "Completed" },
-        { text: "Cancelled", value: "cancelled" },
       ],
       onFilter: (value, record) => record.status === value,
       render: (status) => {
