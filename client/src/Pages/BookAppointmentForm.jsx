@@ -5,6 +5,7 @@ import { ArrowBack } from "@mui/icons-material";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
+import dayjs from "dayjs";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const { Option } = Select;
@@ -120,12 +121,12 @@ const BookAppointmentForm = () => {
 
   const handleDateChange = (date) => {
     setSelectedDate(date ? date.format("YYYY-MM-DD") : null);
-    form.setFieldValue("time", null); // Reset the time field when the date changes
+    form.setFieldValue("time", null);
   };
 
   const handleManagerChange = (manager) => {
     setSelectedManager(manager);
-    form.setFieldValue("time", null); // Reset the time field when the manager changes
+    form.setFieldValue("time", null);
   };
 
   const onFinish = async (values) => {
@@ -165,6 +166,7 @@ const BookAppointmentForm = () => {
   };
 
   const disabledTimes = getDisabledTimes();
+  const today = dayjs().format("YYYY-MM-DD");
 
   return (
     <div
@@ -290,13 +292,12 @@ const BookAppointmentForm = () => {
             onChange={handleDateChange}
             disabledDate={(current) =>
               current &&
-              (current.isBefore(new Date(), "day") ||
+              (current.isBefore(dayjs(), "day") ||
                 current.day() === 0 ||
                 current.day() === 6)
             }
           />
         </Form.Item>
-
         <Form.Item
           name="time"
           label="Time"
@@ -307,7 +308,10 @@ const BookAppointmentForm = () => {
               <Option
                 key={time}
                 value={time}
-                disabled={disabledTimes.includes(time) || time < currentTime}
+                disabled={
+                  disabledTimes.includes(time) ||
+                  (selectedDate === today && time < currentTime)
+                }
               >
                 {time}
               </Option>
