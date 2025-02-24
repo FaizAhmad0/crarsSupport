@@ -9,6 +9,7 @@ const getAllUserAppointment = require("../controller/getAllUserAppointment");
 const addAppointmentReview = require("../controller/addAppointmentReview");
 const getUserDetails = require("../controller/getUserDetails");
 const getAllManagers = require("../controller/getAllManagers");
+const closeTicket = require("../controller/closeTicket");
 
 // Route for login
 router.get("/getallmanager", getAllManagers);
@@ -16,6 +17,7 @@ router.get("/getalltickets", getAllUserTicket);
 router.post("/newticket", createNewTicket);
 router.get("/getticketdetails", getSpecificTicket);
 router.post("/commenttoticket", addCommnetToTicket);
+router.post("/closeticket", closeTicket);
 router.post("/bookappointment", newAppointment);
 router.get("/getallappointments", getAllUserAppointment);
 router.post("/submitreview", addAppointmentReview);

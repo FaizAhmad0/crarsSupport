@@ -66,6 +66,22 @@ const ManagerTicketDetails = () => {
   if (!tickets.length)
     return <p className="text-center text-gray-500">No tickets found.</p>;
 
+  const handleCloseTicket = async (ticketId) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${backendUrl}/user/closeticket`,
+        { ticketId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      message.success("Ticket closed successfully!");
+      window.location.reload(); // Reload to update status
+    } catch (error) {
+      console.error("Error closing ticket:", error.message);
+      message.error("Failed to close the ticket. Please try again.");
+    }
+  };
+
   return (
     <ManagerLayout>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6 bg-white rounded-lg shadow-md">
@@ -127,6 +143,12 @@ const ManagerTicketDetails = () => {
               title="Ticket Details"
               bordered
             >
+              <Button
+                className="mb-4 w-full bg-red-500 text-white"
+                onClick={() => handleCloseTicket(ticket.ticketId)}
+              >
+                Close Ticket
+              </Button>
               <p>
                 <strong>Ticket ID:</strong>TCK{ticket.ticketId}
               </p>
@@ -139,7 +161,7 @@ const ManagerTicketDetails = () => {
                   color={
                     ticket.status === "Open"
                       ? "green"
-                      : ticket.status === "Close"
+                      : ticket.status === "Closed"
                       ? "red"
                       : "orange"
                   }
