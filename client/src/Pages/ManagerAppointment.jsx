@@ -35,12 +35,11 @@ const ManagerAppointment = () => {
         }
       );
 
-      // Sort appointments in descending order by date
-      const sortedAppointments = response.data.appointments.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
+      const sortedAppointments = response.data.appointments
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 10); // Get only the last 10 appointments
 
-      setAppointments(sortedAppointments || []);
+      setAppointments(sortedAppointments);
     } catch (error) {
       console.error(
         "Error fetching appointments:",
@@ -299,7 +298,6 @@ const ManagerAppointment = () => {
             columns={columns}
             dataSource={filteredAppointments}
             rowKey="appointmentId"
-            pagination={{ pageSize: 10 }}
             bordered
             scroll={{ x: true }} // Enables table scrolling for small screens
           />
