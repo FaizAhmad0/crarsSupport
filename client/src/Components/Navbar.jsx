@@ -17,7 +17,7 @@ const Navbar = ({ toggleSidebar }) => {
 
     if (storedData && storedData.date === today) {
       setAppointmentCount(storedData.count);
-      if (storedData.count >= 1) {
+      if (storedData.count >= 2) {
         setIsDisabled(true);
       }
     } else {

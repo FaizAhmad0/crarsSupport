@@ -36,6 +36,7 @@ const BookAppointmentForm = () => {
 
   const currentTime = getCurrentTime();
   const [appointments, setAppointments] = useState([]);
+  console.log(appointments);
   const [managers, setManagers] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedManager, setSelectedManager] = useState(null);
@@ -156,12 +157,15 @@ const BookAppointmentForm = () => {
 
   const getDisabledTimes = () => {
     if (!selectedDate || !selectedManager) return [];
+
     return appointments
-      .filter(
-        (appointment) =>
-          appointment.date === selectedDate &&
+      .filter((appointment) => {
+        const appointmentDate = dayjs(appointment.date).format("YYYY-MM-DD"); // Convert to comparable format
+        return (
+          appointmentDate === selectedDate &&
           appointment.manager === selectedManager
-      )
+        );
+      })
       .map((appointment) => appointment.time);
   };
 
