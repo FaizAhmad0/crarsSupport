@@ -224,7 +224,7 @@ const ManagerAppointment = () => {
       dataIndex: "status",
       key: "status",
       filters: [
-        { text: "Pending", value: "pending" },
+        { text: "Pending", value: "Pending" },
         { text: "Confirmed", value: "confirmed" },
         { text: "Completed", value: "Completed" },
         { text: "Cancelled", value: "cancelled" },
