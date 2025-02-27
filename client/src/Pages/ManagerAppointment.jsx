@@ -300,6 +300,7 @@ const ManagerAppointment = () => {
             rowKey="appointmentId"
             bordered
             scroll={{ x: true }} // Enables table scrolling for small screens
+            pagination={{ pageSize: 20 }}
           />
         ) : (
           <p className="text-center text-gray-500">No appointments found.</p>
