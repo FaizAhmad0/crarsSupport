@@ -35,9 +35,9 @@ const ManagerAppointment = () => {
         }
       );
 
-      const sortedAppointments = response.data.appointments
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 10); // Get only the last 10 appointments
+      const sortedAppointments = response.data.appointments.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
 
       setAppointments(sortedAppointments);
     } catch (error) {
