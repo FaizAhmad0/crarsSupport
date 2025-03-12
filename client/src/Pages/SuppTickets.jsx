@@ -136,7 +136,7 @@ const SuppTickets = () => {
       onFilter: (value, record) => record.status === value,
       render: (status) => {
         const color =
-          status === "Open" ? "green" : status === "Close" ? "red" : "orange";
+          status === "Open" ? "green" : status === "Closed" ? "red" : "orange";
         return <Tag color={color}>{status}</Tag>;
       },
     },
