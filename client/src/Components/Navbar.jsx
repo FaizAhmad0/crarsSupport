@@ -47,7 +47,7 @@ const Navbar = ({ toggleSidebar }) => {
       JSON.stringify({ date: today, count: newCount })
     );
 
-    if (newCount >= 2) {
+    if (newCount >= 20000) {
       setIsDisabled(true);
     }
 
