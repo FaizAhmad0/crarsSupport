@@ -17,7 +17,7 @@ const Navbar = ({ toggleSidebar }) => {
 
     if (storedData && storedData.date === today) {
       setAppointmentCount(storedData.count);
-      if (storedData.count >= 2000) {
+      if (storedData.count >= 2) {
         setIsDisabled(true);
       }
     } else {
@@ -33,7 +33,7 @@ const Navbar = ({ toggleSidebar }) => {
     const storedData = JSON.parse(localStorage.getItem("appointmentData"));
     const today = new Date().toISOString().split("T")[0];
 
-    if (storedData.date === today && storedData.count >= 20000) {
+    if (storedData.date === today && storedData.count >= 2) {
       setIsDisabled(true);
       return;
     }
@@ -47,7 +47,7 @@ const Navbar = ({ toggleSidebar }) => {
       JSON.stringify({ date: today, count: newCount })
     );
 
-    if (newCount >= 20000) {
+    if (newCount >= 2) {
       setIsDisabled(true);
     }
 
