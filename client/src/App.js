@@ -41,8 +41,8 @@ function App() {
             <Route path="/userdash" exact element={<UserDash />} />
             <Route path="/user-tickets" exact element={<UserTickets />} />
             <Route path="/ticket/:ticketId" element={<TicketDetails />} />
-            {/* <Route path="/book-appointment" element={<BookAppointmentForm />} /> */}
-            <Route path="/book-appointment" element={<Holiday />} />
+            <Route path="/book-appointment" element={<BookAppointmentForm />} />
+            {/* <Route path="/book-appointment" element={<Holiday />} /> */}
             <Route path="/appointments" element={<UserAppointment />} />
           </Route>
 
