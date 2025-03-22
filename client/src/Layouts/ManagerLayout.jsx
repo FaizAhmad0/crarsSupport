@@ -34,6 +34,7 @@ const ManagerLayout = ({ children }) => {
     else if (path.includes("manager-tickets")) setActiveLink("tickets");
     else if (path.includes("manager-appointments"))
       setActiveLink("appointments");
+    else if (path.includes("manager-complaints")) setActiveLink("complaints");
     else if (path.includes("manager-tickets")) setActiveLink("raise-ticket");
   }, [location]); // Run this effect whenever the location changes
 
@@ -63,6 +64,11 @@ const ManagerLayout = ({ children }) => {
               icon: <EventIcon />,
               path: "/manager-appointments",
             },
+            // {
+            //   name: "Complaints",
+            //   icon: <EventIcon />,
+            //   path: "/manager-complaints",
+            // },
             {
               name: "Raise Ticket",
               icon: <AddCircleIcon />,

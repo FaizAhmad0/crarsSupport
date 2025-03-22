@@ -13,17 +13,56 @@ import UserLayout from "../Layouts/UserLayout";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const { Title, Text } = Typography;
 const { Content } = Layout;
 
 const UserDash = () => {
+  const navigate = useNavigate();
+  const [appointments, setAppointments] = useState([]);
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const fetchAppointments = async () => {
+    const uid = localStorage.getItem("uid");
+    const token = localStorage.getItem("token");
+
+    if (!uid || !token) {
+      console.error("Missing user ID or token in localStorage.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(`${backendUrl}/user/getallcomplaints`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { uid },
+      });
+
+      // Sort appointments in descending order by date
+      const sortedAppointments = response.data.complaints.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+
+      setAppointments(sortedAppointments || []);
+    } catch (error) {
+      console.error(
+        "Error fetching appointments:",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    fetchAppointments();
     const uid = localStorage.getItem("uid");
 
     if (!uid) {
@@ -250,6 +289,20 @@ const UserDash = () => {
                       </Tag>
                     ))
                   : "No managers assigned"}
+              </Text>
+            </Card>
+            <Card
+              onClick={() => {
+                navigate("/complaints");
+              }}
+              hoverable
+              className="border-0 bg-white shadow-md transition-transform transform hover:-translate-y-2"
+            >
+              <Title level={4} className="text-gray-700">
+                Complaints
+              </Title>
+              <Text className="font-semibold text-blue-600">
+                Total Complaint : {appointments.length}
               </Text>
             </Card>
           </div>

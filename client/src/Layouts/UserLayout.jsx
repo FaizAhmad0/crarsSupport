@@ -4,6 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import EventIcon from "@mui/icons-material/Event";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -33,6 +34,7 @@ const UserLayout = ({ children }) => {
     if (path.includes("userdash")) setActiveLink("dashboard");
     else if (path.includes("user-tickets")) setActiveLink("tickets");
     else if (path.includes("appointments")) setActiveLink("appointments");
+    else if (path.includes("complaints")) setActiveLink("complaints");
     else if (path.includes("raise-ticket")) setActiveLink("raise-ticket");
   }, [location]); // Run this effect whenever the location changes
 
@@ -59,9 +61,19 @@ const UserLayout = ({ children }) => {
               path: "/appointments",
             },
             {
+              name: "Complaints",
+              icon: <EventIcon />,
+              path: "/complaints",
+            },
+            {
               name: "Raise Ticket",
               icon: <AddCircleIcon />,
               path: "/raise-ticket",
+            },
+            {
+              name: "File Complaint",
+              icon: <PrivacyTipIcon className="text-red-500" />,
+              path: "/file-complaint",
             },
             {
               name: "Logout",

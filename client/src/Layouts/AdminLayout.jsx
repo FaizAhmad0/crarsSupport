@@ -32,6 +32,7 @@ const AdminLayout = ({ children }) => {
     if (path.includes("/admindash")) setActiveLink("dashboard");
     else if (path.includes("/admin-tickets")) setActiveLink("tickets");
     else if (path.includes("/admin-appointment")) setActiveLink("appointments");
+    else if (path.includes("/admin-complaints")) setActiveLink("complaints");
     else if (path.includes("/all-users")) setActiveLink("users");
     else if (path.includes("/all-managers")) setActiveLink("managers");
   }, [location]); // Run this effect whenever the location changes
@@ -58,6 +59,11 @@ const AdminLayout = ({ children }) => {
               icon: <EventIcon />,
               path: "/admin-appointment",
             },
+            // {
+            //   name: "Complaints",
+            //   icon: <EventIcon />,
+            //   path: "/admin-complaints",
+            // },
             {
               name: "Logout",
               icon: <LogoutIcon />,

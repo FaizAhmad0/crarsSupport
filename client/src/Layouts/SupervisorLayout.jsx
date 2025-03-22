@@ -32,6 +32,7 @@ const SupervisorLayout = ({ children }) => {
     if (path.includes("supervisordash")) setActiveLink("supervisordash");
     else if (path.includes("sup-tickets")) setActiveLink("tickets");
     else if (path.includes("sup-appointment")) setActiveLink("appointments");
+    else if (path.includes("sup-complaints")) setActiveLink("complaints");
   }, [location]); // Run this effect whenever the location changes
 
   return (
@@ -59,6 +60,11 @@ const SupervisorLayout = ({ children }) => {
               name: "Appointments",
               icon: <EventIcon />,
               path: "/sup-appointment",
+            },
+            {
+              name: "Complaints",
+              icon: <EventIcon />,
+              path: "/sup-complaints",
             },
 
             {

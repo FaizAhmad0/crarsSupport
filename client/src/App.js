@@ -26,6 +26,11 @@ import AdminPrivateRoute from "./Components/AdminPrivateRoute";
 import SupPrivateRoute from "./Components/SupPrivateRoute";
 import ManagerRaisedTicket from "./Pages/ManagerRaisedTicket";
 import Holiday from "./Pages/Holiday";
+import UserComplaint from "./Pages/UserComplaint";
+import UserComplaints from "./Pages/UserComplaints";
+import ManagerComplaint from "./Pages/ManagerComplaint";
+import SupComplaints from "./Pages/SupComplaints";
+import AdminComplaints from "./Pages/AdminComplaints";
 
 function App() {
   return (
@@ -44,6 +49,8 @@ function App() {
             <Route path="/book-appointment" element={<BookAppointmentForm />} />
             {/* <Route path="/book-appointment" element={<Holiday />} /> */}
             <Route path="/appointments" element={<UserAppointment />} />
+            <Route path="/file-complaint" element={<UserComplaint />} />
+            <Route path="/complaints" element={<UserComplaints />} />
           </Route>
 
           {/* Manager Routes */}
@@ -62,6 +69,7 @@ function App() {
               path="/manager-appointments"
               element={<ManagerAppointment />}
             />
+            <Route path="/manager-complaints" element={<ManagerComplaint />} />
           </Route>
 
           {/* Admin Routes */}
@@ -69,6 +77,7 @@ function App() {
             <Route path="/admindash" element={<AdminDash />} />
             <Route path="/admin-tickets" element={<AllTickets />} />
             <Route path="/admin-appointment" element={<AllAppointment />} />
+            <Route path="/admin-complaints" element={<AdminComplaints />} />
             <Route path="/admin/:ticketId" element={<AdminTckDetails />} />
           </Route>
 
@@ -77,6 +86,7 @@ function App() {
             <Route path="/supervisordash" element={<SupervisorDash />} />
             <Route path="/sup-tickets" element={<SuppTickets />} />
             <Route path="/sup-appointment" element={<SuppAppointments />} />
+            <Route path="/sup-complaints" element={<SupComplaints />} />
           </Route>
         </Routes>
       </Router>
