@@ -207,9 +207,7 @@ const SuppAppointments = () => {
       key: "status",
       filters: [
         { text: "Pending", value: "Pending" },
-        { text: "Confirmed", value: "confirmed" },
         { text: "Completed", value: "Completed" },
-        { text: "Cancelled", value: "cancelled" },
       ],
       onFilter: (value, record) => record.status === value,
       render: (status) => {
