@@ -64,11 +64,11 @@ const ManagerLayout = ({ children }) => {
               icon: <EventIcon />,
               path: "/manager-appointments",
             },
-            // {
-            //   name: "Complaints",
-            //   icon: <EventIcon />,
-            //   path: "/manager-complaints",
-            // },
+            {
+              name: "Complaints",
+              icon: <EventIcon />,
+              path: "/manager-complaints",
+            },
             {
               name: "Raise Ticket",
               icon: <AddCircleIcon />,
