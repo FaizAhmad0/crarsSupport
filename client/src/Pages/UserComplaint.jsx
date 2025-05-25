@@ -23,7 +23,6 @@ const UserComplaint = () => {
 
   const currentTime = getCurrentTime();
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments);
   const [managers, setManagers] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedManager, setSelectedManager] = useState(null);

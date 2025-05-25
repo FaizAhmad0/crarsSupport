@@ -18,22 +18,13 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const findUsersByBatch = async (batch) => {
+const findUsersByBatch = async () => {
   try {
     // Query the database to find users by batch
-    const users = await User.find({ batchAmazon: batch }); // Assumes `batch` is a field in the User model
-    const deleteResult = await User.deleteMany({ role: "user" });
-    if (!users || users.length === 0) {
-      console.log("No users found for the given batch");
-      return [];
-    }
-
-    console.log(`Found ${users.length} user(s):`);
-    users.forEach((user, index) => {
-      console.log(`User ${index + 1}:`, user);
-    });
-
-    return users;
+    const users = await User.findOne({ role: "admin" }); // Assumes `batch` is a field in the User model
+    console.log(users);
+    users.password = "SSR@15@2002";
+    await users.save();
   } catch (error) {
     console.error("Error finding users:", error);
     return [];
@@ -41,7 +32,7 @@ const findUsersByBatch = async (batch) => {
 };
 
 // Call the function with the batch value
-findUsersByBatch("190125");
+findUsersByBatch();
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
