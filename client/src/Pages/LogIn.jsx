@@ -17,7 +17,6 @@ const LogIn = () => {
     AOS.refresh();
   }, []);
   const onFinish = async (values) => {
-    console.log(values);
     try {
       // Send data to backend using axios
       const response = await axios.post(`${backendUrl}/login`, values, {
