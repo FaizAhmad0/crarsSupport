@@ -12,13 +12,12 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const ManagerRaisedTicket = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState(""); // State for search input
-  const [dateFilter, setDateFilter] = useState("all"); // State for date filter
+  const [searchText, setSearchText] = useState("");
+  const [dateFilter, setDateFilter] = useState("all");
   const navigate = useNavigate();
 
   const fetchTickets = async () => {
     const uid = localStorage.getItem("uid");
-    console.log(uid);
     const token = localStorage.getItem("token");
 
     if (!uid || !token) {

@@ -31,6 +31,7 @@ import UserComplaints from "./Pages/UserComplaints";
 import ManagerComplaint from "./Pages/ManagerComplaint";
 import SupComplaints from "./Pages/SupComplaints";
 import AdminComplaints from "./Pages/AdminComplaints";
+import LoginForm from "./Pages/LoginForm";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" exact element={<Home />} />
-          <Route path="/login" exact element={<LogIn />} />
+          <Route path="/login" exact element={<LoginForm />} />
           <Route path="/raise-ticket" exact element={<RaiseTicketForm />} />
 
           {/* User Routes with Weekday Validation */}

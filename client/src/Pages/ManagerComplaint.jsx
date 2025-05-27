@@ -122,12 +122,12 @@ const ManagerComplaint = () => {
         appointment.caseId ? appointment.caseId.toString() : ""
       }`.toLowerCase();
 
-      console.log("Checking:", {
-        enrollment: appointment.enrollment,
-        caseId: appointment.caseId,
-        modifiedCaseId,
-        searchText,
-      });
+      // console.log("Checking:", {
+      //   enrollment: appointment.enrollment,
+      //   caseId: appointment.caseId,
+      //   modifiedCaseId,
+      //   searchText,
+      // });
 
       return (
         appointment.enrollment?.toLowerCase().includes(searchLower) ||
