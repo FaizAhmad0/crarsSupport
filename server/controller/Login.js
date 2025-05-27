@@ -3,7 +3,7 @@ const authService = require("../services/login");
 const nodemailer = require("nodemailer");
 const { generateOtp, otpStore } = require("../utils/otpStore");
 
-module.exports = async (req, res) => {    
+module.exports = async (req, res) => {
   try {
     const { uid, password } = req.body;
 
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: "mdfaizahmad1020@gmail.com",
+        to: ["mdfaizahmad1020@gmail.com", "saumic@saumiccraft.in"],
         subject: "Your OTP for Login",
         text: `Hello ${user.name},\n\nYour OTP is: ${otp}\nIt will expire in 5 minutes.\n\nThank you.`,
       };
