@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
 
       const mailOptions = {
         from: process.env.EMAIL_USER,
-        to: ["mdfaizahmad1020@gmail.com", "operationssaumiccraft@gmai.com"],
+        to: ["mdfaizahmad1020@gmail.com", "operationssaumiccraft@gmail.com"],
         subject: "Your OTP for Login",
         text: `Hello ${user.name},\n\nYour OTP is: ${otp}\nIt will expire in 5 minutes.\n\nThank you.`,
       };

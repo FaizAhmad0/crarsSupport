@@ -65,6 +65,9 @@ const LoginForm = () => {
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
     localStorage.setItem("uid", data.uid);
+    localStorage.setItem("phone", data.phone);
+    localStorage.setItem("enrollmentIdAmazon", data.enrollmentIdAmazon);
+    localStorage.setItem("enrollmentIdWebsite", data.enrollmentIdWebsite);
     localStorage.removeItem("theme");
 
     if (data.role === "user") {
