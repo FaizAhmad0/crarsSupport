@@ -3,7 +3,7 @@ const Complaint = require("../model/complaintModel");
 module.exports = async (req, res) => {
   try {
     const { caseId, rating, message } = req.body;
-    console.log(caseId);
+    // console.log(caseId);
 
     // Find the appointment by its appointmentId
     const appointment = await Complaint.findOne({ caseId });

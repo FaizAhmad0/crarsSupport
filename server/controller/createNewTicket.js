@@ -4,7 +4,7 @@ const User = require("../model/userModel");
 // Authenticate with Double Tick API
 
 module.exports = async (req, res) => {
-  console.log("working");
+  // console.log("working");
   try {
     const { name } = req.body;
 

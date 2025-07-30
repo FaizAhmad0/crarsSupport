@@ -1,7 +1,7 @@
 const User = require("../model/userModel");
 
 module.exports = async (req, res) => {
-  console.log("Fetching managers...");
+  // console.log("Fetching managers...");
   try {
     // Query to find all users with the role "manager"
     const managers = await User.find({ role: "manager" });

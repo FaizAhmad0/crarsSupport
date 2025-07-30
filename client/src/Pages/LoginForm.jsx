@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "aos/dist/aos.css";
 import AOS from "aos";
 import "./LoginForm.css";
-
+import axios from "axios";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const LoginForm = () => {
@@ -14,46 +13,39 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [requiresOtp, setRequiresOtp] = useState(false);
-  const [otpToken, setOtpToken] = useState({});
-  const [uid, setUid] = useState(""); // updated name
+  const [uid, setUid] = useState("");
 
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const onFinish = (values) => {
-    axios
-      .post(`${backendUrl}/login`, values)
-      .then((response) => {
-        if (response.data.requiresOtp) {
-          messageApi.info(response.data.message);
-          setRequiresOtp(true);
-          setOtpToken(response.data);
-          setUid(values.uid); // save uid
-        } else {
-          handleLoginSuccess(response.data);
-        }
-      })
-      .catch((error) => {
-        messageApi.error(error.response?.data?.message || "Login failed");
-        console.error("Login error:", error);
-      });
+  const onFinish = async (values) => {
+    try {
+      const res = await axios.post(`${backendUrl}/login`, values);
+      if (res.data.requiresOtp) {
+        setRequiresOtp(true);
+        setUid(values.uid);
+        messageApi.info("OTP sent to your registered email.");
+      } else {
+        handleLoginSuccess(res.data);
+      }
+    } catch (error) {
+      messageApi.error(error.response?.data?.error || "Login failed");
+    }
   };
 
-  const onOtpSubmit = (otpValues) => {
-    const { otp } = otpValues;
-
-    axios
-      .post(`${backendUrl}/login/verifyOtp`, { uid, otp }) // use uid here
-      .then(() => {
-        handleLoginSuccess(otpToken); // Use stored token from initial response
-      })
-      .catch((error) => {
-        messageApi.error(
-          error.response?.data?.message || "OTP verification failed"
-        );
-        console.error("OTP verification error:", error);
+  const onOtpSubmit = async (values) => {
+    try {
+      const res = await axios.post(`${backendUrl}/login/verify-otp`, {
+        uid,
+        otp: values.otp,
       });
+      handleLoginSuccess(res.data);
+    } catch (error) {
+      messageApi.error(
+        error.response?.data?.error || "OTP verification failed"
+      );
+    }
   };
 
   const handleLoginSuccess = (data) => {
@@ -100,7 +92,6 @@ const LoginForm = () => {
           form={form}
           name="login_form"
           className="login-form"
-          initialValues={{ remember: true }}
           onFinish={requiresOtp ? onOtpSubmit : onFinish}
         >
           <div className="login-logo">
@@ -115,10 +106,7 @@ const LoginForm = () => {
                 name="uid"
                 rules={[{ required: true, message: "Please input your UID!" }]}
               >
-                <Input
-                  prefix={<UserOutlined />}
-                  placeholder="UID (e.g., UID123)"
-                />
+                <Input prefix={<UserOutlined />} placeholder="UID" />
               </Form.Item>
               <Form.Item
                 name="password"
