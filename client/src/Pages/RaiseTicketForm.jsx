@@ -12,8 +12,9 @@ const { Option } = Select;
 const RaiseTicketForm = () => {
   const role = localStorage.getItem("role");
   const [form] = Form.useForm();
-  const navigate = useNavigate(); // React Router's useNavigate for navigation
-  const [managers, setManagers] = useState([]); // Initialize as an empty array
+  const navigate = useNavigate();
+  const [managers, setManagers] = useState([]);
+  console.log(managers);
 
   useEffect(() => {
     AOS.init({
@@ -23,7 +24,6 @@ const RaiseTicketForm = () => {
     AOS.refresh();
   }, []);
 
-  // Fetch all managers from the backend
   useEffect(() => {
     const fetchManagers = async () => {
       const role = localStorage.getItem("role");
@@ -190,7 +190,7 @@ const RaiseTicketForm = () => {
           <Select placeholder="Choose your manager" className="w-full">
             {managers.length > 0 ? (
               managers.map((manager) => (
-                <Option key={manager.id} value={manager.name}>
+                <Option key={manager._id} value={manager.name}>
                   {manager.name}
                 </Option>
               ))
