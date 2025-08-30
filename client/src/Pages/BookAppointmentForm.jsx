@@ -70,7 +70,7 @@ const BookAppointmentForm = () => {
   };
 
   useEffect(() => {
-    fetchAppointments();
+    // fetchAppointments();
     AOS.init({ duration: 1200, once: false });
     AOS.refresh();
 
@@ -142,7 +142,9 @@ const BookAppointmentForm = () => {
       );
 
       if (response.status === 201 || response.status === 200) {
-        message.success("Appointment booked successfully!");
+        message.success(
+          "Your appointment has been successfully booked. Our manager will contact you within 24 to 48 hours."
+        );
         form.resetFields();
         navigate("/appointments");
       } else {
@@ -267,7 +269,7 @@ const BookAppointmentForm = () => {
           >
             {managers.length > 0 ? (
               managers.map((manager) => (
-                <Option key={manager.id} value={manager.name}>
+                <Option key={manager._id} value={manager.name}>
                   {manager.name}
                 </Option>
               ))
@@ -285,7 +287,7 @@ const BookAppointmentForm = () => {
           <Input placeholder="Enter the subject" />
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="date"
           label="Date"
           rules={[{ required: true, message: "Please select a date!" }]}
@@ -300,8 +302,8 @@ const BookAppointmentForm = () => {
                 current.day() === 6)
             }
           />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           name="time"
           label="Time"
           rules={[{ required: true, message: "Please select a time!" }]}
@@ -320,7 +322,7 @@ const BookAppointmentForm = () => {
               </Option>
             ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           name="description"

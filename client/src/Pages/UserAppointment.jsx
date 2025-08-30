@@ -127,41 +127,41 @@ const UserAppointment = () => {
       key: "platform",
       ellipsis: true,
     },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (text) => new Date(text).toLocaleDateString(),
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
-      render: (text) => {
-        if (!text) {
-          return "N/A"; // Handle empty or null time values
-        }
+    // {
+    //   title: "Date",
+    //   dataIndex: "createdAt",
+    //   key: "createdAt",
+    //   render: (text) => new Date(text).toLocaleDateString(),
+    // },
+    // {
+    //   title: "Time",
+    //   dataIndex: "time",
+    //   key: "time",
+    //   render: (text) => {
+    //     if (!text) {
+    //       return "N/A"; // Handle empty or null time values
+    //     }
 
-        // Ensure time string is valid and fallback if parsing fails
-        try {
-          const [hours, minutes] = text.split(":");
-          if (!hours || !minutes) throw new Error("Invalid time format");
+    //     // Ensure time string is valid and fallback if parsing fails
+    //     try {
+    //       const [hours, minutes] = text.split(":");
+    //       if (!hours || !minutes) throw new Error("Invalid time format");
 
-          // Format the time with Intl.DateTimeFormat
-          const date = new Date();
-          date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-          const options = {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          };
-          return new Intl.DateTimeFormat("en-US", options).format(date);
-        } catch (error) {
-          console.error("Error parsing time:", text, error.message);
-          return "Invalid Time";
-        }
-      },
-    },
+    //       // Format the time with Intl.DateTimeFormat
+    //       const date = new Date();
+    //       date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+    //       const options = {
+    //         hour: "2-digit",
+    //         minute: "2-digit",
+    //         hour12: true,
+    //       };
+    //       return new Intl.DateTimeFormat("en-US", options).format(date);
+    //     } catch (error) {
+    //       console.error("Error parsing time:", text, error.message);
+    //       return "Invalid Time";
+    //     }
+    //   },
+    // },
 
     {
       title: "Manager",

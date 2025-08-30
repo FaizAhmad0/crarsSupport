@@ -37,9 +37,11 @@ const SuppAppointments = () => {
       );
 
       // Sort appointments in descending order by date
-      const sortedAppointments = response.data.appointments.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
+      const sortedAppointments = response.data.appointments.sort((a, b) => {
+        if (!a.createdAt) return 1; // put items without createdAt at the bottom
+        if (!b.createdAt) return -1;
+        return new Date(b.createdAt) - new Date(a.createdAt); // newest first
+      });
 
       setAppointments(sortedAppointments || []);
     } catch (error) {
@@ -154,40 +156,52 @@ const SuppAppointments = () => {
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
-      render: (text) => new Date(text).toLocaleDateString(),
-    },
-    {
-      title: "Time",
-      dataIndex: "time",
-      key: "time",
-      width: 120,
-      render: (text) => {
-        if (!text) {
-          return "N/A"; // Handle empty or null time values
-        }
-
-        // Ensure time string is valid and fallback if parsing fails
-        try {
-          const [hours, minutes] = text.split(":");
-          if (!hours || !minutes) throw new Error("Invalid time format");
-
-          // Format the time with Intl.DateTimeFormat
-          const date = new Date();
-          date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
-          const options = {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          };
-          return new Intl.DateTimeFormat("en-US", options).format(date);
-        } catch (error) {
-          console.error("Error parsing time:", text, error.message);
-          return "Invalid Time";
-        }
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => {
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
       },
     },
+    // {
+    //   title: "Date",
+    //   dataIndex: "date",
+    //   key: "date",
+    //   render: (text) => new Date(text).toLocaleDateString(),
+    // },
+    // {
+    //   title: "Time",
+    //   dataIndex: "time",
+    //   key: "time",
+    //   width: 120,
+    //   render: (text) => {
+    //     if (!text) {
+    //       return "N/A"; // Handle empty or null time values
+    //     }
+
+    //     // Ensure time string is valid and fallback if parsing fails
+    //     try {
+    //       const [hours, minutes] = text.split(":");
+    //       if (!hours || !minutes) throw new Error("Invalid time format");
+
+    //       // Format the time with Intl.DateTimeFormat
+    //       const date = new Date();
+    //       date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+    //       const options = {
+    //         hour: "2-digit",
+    //         minute: "2-digit",
+    //         hour12: true,
+    //       };
+    //       return new Intl.DateTimeFormat("en-US", options).format(date);
+    //     } catch (error) {
+    //       console.error("Error parsing time:", text, error.message);
+    //       return "Invalid Time";
+    //     }
+    //   },
+    // },
     {
       title: "Manager",
       dataIndex: "manager",

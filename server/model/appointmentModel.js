@@ -16,62 +16,65 @@ const reviewSchema = new Schema({
   },
 });
 
-const appointmentSchema = new Schema({
-  appointmentId: {
-    type: Number,
+const appointmentSchema = new Schema(
+  {
+    appointmentId: {
+      type: Number,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    number: {
+      type: Number,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    subject: {
+      type: String,
+      required: true,
+    },
+    uid: {
+      type: String,
+      required: true,
+    },
+    platform: {
+      type: String,
+      required: true,
+    },
+    // time: {
+    //   type: String,
+    //   required: true,
+    // },
+    // date: {
+    //   type: String,
+    //   required: true,
+    // },
+    enrollment: {
+      type: String,
+      required: true,
+    },
+    manager: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    userReview: reviewSchema,
+    managerReview: reviewSchema,
+    ad: String,
+    status: {
+      type: String,
+      default: "Pending",
+    },
   },
-  name: {
-    type: String,
-    required: true,
-  },
-  number: {
-    type: Number,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  subject: {
-    type: String,
-    required: true,
-  },
-  uid: {
-    type: String,
-    required: true,
-  },
-  platform: {
-    type: String,
-    required: true,
-  },
-  time: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: String,
-    required: true,
-  },
-  enrollment: {
-    type: String,
-    required: true,
-  },
-  manager: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  userReview: reviewSchema,
-  managerReview: reviewSchema,
-  ad: String,
-  status: {
-    type: String,
-    default: "Pending",
-  },
-});
+  { timestamps: true }
+);
 
 appointmentSchema.plugin(mongooseSequence, { inc_field: "appointmentId" });
 

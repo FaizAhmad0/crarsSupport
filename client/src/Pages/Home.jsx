@@ -1,10 +1,11 @@
 import { React, useEffect } from "react";
 import Navbar from "../Components/Navbar";
-import { Button } from "antd";
+import { Button,message } from "antd";
 import Footer from "../Components/Footer";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,21 +21,56 @@ const Home = () => {
   };
 
   useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      once: false,
-    });
+    // Initialize AOS
+    AOS.init({ duration: 1200, once: false });
     AOS.refresh();
-    if (role === "user") {
-      navigate("/userdash");
-    } else if (role === "manager") {
-      navigate("/managerdash");
-    } else if (role === "admin") {
-      navigate("/admindash");
-    } else if (role === "supervisor") {
-      navigate("/supervisordash");
+
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role"); // stored separately (or decode from token)
+
+    if (!token) {
+      navigate("/");
+      message.success("Session expired or not logged in. Please log in again!");
+      return;
     }
-  }, []);
+
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp < currentTime) {
+        localStorage.removeItem("token");
+        navigate("/");
+        message.success(
+          "Session expired or not logged in. Please log in again!"
+        );
+        return;
+      }
+
+      // ✅ Token is valid → redirect to dashboard based on role
+      switch (role) {
+        case "user":
+          navigate("/userdash");
+          break;
+        case "manager":
+          navigate("/managerdash");
+          break;
+        case "admin":
+          navigate("/admindash");
+          break;
+        case "supervisor":
+          navigate("/supervisordash");
+          break;
+        default:
+          navigate("/");
+          break;
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+      navigate("/");
+      message.success("Session expired or not logged in. Please log in again!");
+    }
+  }, [navigate]);
 
   return (
     <div className="mt-8">
