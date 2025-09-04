@@ -11,11 +11,14 @@ router.post("/", async (req, res) => {
   const uid = rawUid.replace(/^UID/, "");
 
   const user = await User.findOne({ uid });
+  if (!user) {
+    return res.status(401).json({ error: "User not found with this uid" });
+  }
   const trimmedInputPassword = password.trim();
   const trimmedStoredPassword = user.password.trim();
 
-  if (!user || trimmedInputPassword !== trimmedStoredPassword) {
-    return res.status(401).json({ error: "Invalid credentials" });
+  if (trimmedInputPassword !== trimmedStoredPassword) {
+    return res.status(401).json({ error: "Incorrect password" });
   }
 
   // if (!user || password !== user.password) {
@@ -67,6 +70,10 @@ router.post("/", async (req, res) => {
     let recipientEmail;
     if (user.role === "dispatch") {
       recipientEmail = "dispatchsaumiccraft@gmail.com";
+    } else if (user.role === "accountant") {
+      recipientEmail = "starcrownsaumic@gmail.com";
+    } else if (user.role === "manager") {
+      recipientEmail = "amazontl1@saumiccraft.in";
     } else {
       recipientEmail = "operationssaumiccraft@gmail.com";
     }
