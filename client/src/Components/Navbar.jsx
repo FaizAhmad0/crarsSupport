@@ -11,11 +11,21 @@ const Navbar = ({ toggleSidebar }) => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
+
+    // Check if weekend (Saturday = 6, Sunday = 0)
+    const isWeekend = today.getDay() === 0 || today.getDay() === 6;
+
+    if (isWeekend) {
+      setIsDisabled(true);
+      return; // No need to check localStorage further
+    }
+
     // Get stored data
     const storedData = JSON.parse(localStorage.getItem("appointmentData"));
-    const today = new Date().toISOString().split("T")[0];
 
-    if (storedData && storedData.date === today) {
+    if (storedData && storedData.date === todayStr) {
       setAppointmentCount(storedData.count);
       if (storedData.count >= 2) {
         setIsDisabled(true);
@@ -24,16 +34,24 @@ const Navbar = ({ toggleSidebar }) => {
       // Reset counter if it's a new day
       localStorage.setItem(
         "appointmentData",
-        JSON.stringify({ date: today, count: 0 })
+        JSON.stringify({ date: todayStr, count: 0 })
       );
     }
   }, []);
 
   const handleBookAppointment = () => {
-    const storedData = JSON.parse(localStorage.getItem("appointmentData"));
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
 
-    if (storedData.date === today && storedData.count >= 2) {
+    // Prevent booking if weekend
+    if (today.getDay() === 0 || today.getDay() === 6) {
+      setIsDisabled(true);
+      return;
+    }
+
+    const storedData = JSON.parse(localStorage.getItem("appointmentData"));
+
+    if (storedData.date === todayStr && storedData.count >= 2) {
       setIsDisabled(true);
       return;
     }
@@ -44,7 +62,7 @@ const Navbar = ({ toggleSidebar }) => {
 
     localStorage.setItem(
       "appointmentData",
-      JSON.stringify({ date: today, count: newCount })
+      JSON.stringify({ date: todayStr, count: newCount })
     );
 
     if (newCount >= 2) {
@@ -100,7 +118,7 @@ const Navbar = ({ toggleSidebar }) => {
               className="bg-gradient-to-r from-blue-800 to-blue-400 hover:from-blue-700 hover:to-blue-500 font-bold shadow-lg hover:shadow-xl"
               disabled={isDisabled}
             >
-              {isDisabled ? "Book Appointment" : "Book Appointment"}
+              {isDisabled ? "Booking Closed" : "Book Appointment"}
             </Button>
           ) : null
         ) : (
