@@ -70,7 +70,7 @@ const AllAppointment = () => {
     if (dateFilter === "all") return true;
 
     const now = new Date();
-    const appointmentDate = new Date(appointment.date);
+    const appointmentDate = new Date(appointment.createdAt);
 
     switch (dateFilter) {
       case "today":
