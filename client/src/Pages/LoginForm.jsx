@@ -137,6 +137,17 @@ const LoginForm = () => {
             >
               {requiresOtp ? "Verify OTP" : "Log in"}
             </Button>
+            {requiresOtp && (
+              <Button
+                onClick={() => {
+                  window.location.reload();
+                }}
+                style={{ backgroundColor: "rgb(71,178,228)", color: "white" }}
+                className="mt-4"
+              >
+                Resend OTP
+              </Button>
+            )}
           </Form.Item>
         </Form>
         <div className="login-footer">

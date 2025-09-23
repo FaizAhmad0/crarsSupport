@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, DatePicker, message } from "antd";
+import { Form, Input, Button, Select, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import AOS from "aos";
@@ -10,67 +10,33 @@ import dayjs from "dayjs";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const { Option } = Select;
 
-const predefinedTimes = [
-  "10:05",
-  "10:15",
-  "10:25",
-  "10:35",
-  "10:45",
-  "14:05",
-  "14:15",
-  "14:25",
-  "14:35",
-  "14:45",
-];
+const TOTAL_SLOTS = 30;
 
 const BookAppointmentForm = () => {
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
-  const currentTime = getCurrentTime();
   const [appointments, setAppointments] = useState([]);
   const [managers, setManagers] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedManager, setSelectedManager] = useState(null);
 
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const today = dayjs().format("YYYY-MM-DD");
 
   const fetchAppointments = async () => {
     const token = localStorage.getItem("token");
-
     try {
       const response = await axios.get(
         `${backendUrl}/admin/getallappointments`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-
-      const sortedAppointments = response.data.appointments.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
-      );
-
-      setAppointments(sortedAppointments || []);
+      setAppointments(response.data.appointments || []);
     } catch (error) {
-      console.error(
-        "Error fetching appointments:",
-        error.response?.data?.message || error.message
-      );
+      console.error("Error fetching appointments:", error.message);
     }
   };
 
   useEffect(() => {
-    // fetchAppointments();
     AOS.init({ duration: 1200, once: false });
     AOS.refresh();
 
@@ -85,9 +51,7 @@ const BookAppointmentForm = () => {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${backendUrl}/user/getallmanager`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         if (response.status === 200) {
           setManagers(response.data.managers || []);
@@ -101,6 +65,7 @@ const BookAppointmentForm = () => {
     };
 
     fetchManagers();
+    fetchAppointments();
   }, [form]);
 
   const handlePlatformChange = (value) => {
@@ -119,20 +84,16 @@ const BookAppointmentForm = () => {
     }
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date ? date.format("YYYY-MM-DD") : null);
-    form.setFieldValue("time", null);
-  };
-
   const handleManagerChange = (manager) => {
     setSelectedManager(manager);
-    form.setFieldValue("time", null);
+    form.setFieldValue("slot", null);
   };
 
   const onFinish = async (values) => {
     const formattedValues = {
       ...values,
       uid: localStorage.getItem("uid"),
+      date: today, // force today's date
     };
 
     try {
@@ -151,27 +112,27 @@ const BookAppointmentForm = () => {
         message.error("Something went wrong. Please try again.");
       }
     } catch (error) {
-      console.error("Error booking appointment:", error.message);
+      console.error(
+        "Error booking appointment:",
+        error.response?.data?.message || error.message
+      );
       message.error("Failed to book the appointment. Please try again later.");
     }
   };
 
-  const getDisabledTimes = () => {
-    if (!selectedDate || !selectedManager) return [];
-
+  // Get already taken slots for today & selected manager
+  const getDisabledSlots = () => {
+    if (!selectedManager) return [];
     return appointments
-      .filter((appointment) => {
-        const appointmentDate = dayjs(appointment.date).format("YYYY-MM-DD"); // Convert to comparable format
-        return (
-          appointmentDate === selectedDate &&
+      .filter(
+        (appointment) =>
+          dayjs(appointment.date).format("YYYY-MM-DD") === today &&
           appointment.manager === selectedManager
-        );
-      })
-      .map((appointment) => appointment.time);
+      )
+      .map((appointment) => appointment.slot);
   };
 
-  const disabledTimes = getDisabledTimes();
-  const today = dayjs().format("YYYY-MM-DD");
+  const disabledSlots = getDisabledSlots();
 
   return (
     <div
@@ -280,49 +241,33 @@ const BookAppointmentForm = () => {
         </Form.Item>
 
         <Form.Item
+          name="slot"
+          label="Slot"
+          rules={[{ required: true, message: "Please select a slot!" }]}
+        >
+          <Select placeholder="Choose a slot" disabled={!selectedManager}>
+            {Array.from({ length: TOTAL_SLOTS }, (_, i) => {
+              const slotName = `Slot-${i + 1}`;
+              return (
+                <Option
+                  key={slotName}
+                  value={slotName}
+                  disabled={disabledSlots.includes(slotName)}
+                >
+                  {slotName}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
           name="subject"
           label="Subject"
           rules={[{ required: true, message: "Please enter a subject!" }]}
         >
           <Input placeholder="Enter the subject" />
         </Form.Item>
-
-        {/* <Form.Item
-          name="date"
-          label="Date"
-          rules={[{ required: true, message: "Please select a date!" }]}
-        >
-          <DatePicker
-            className="w-full"
-            onChange={handleDateChange}
-            disabledDate={(current) =>
-              current &&
-              (current.isBefore(dayjs(), "day") ||
-                current.day() === 0 ||
-                current.day() === 6)
-            }
-          />
-        </Form.Item> */}
-        {/* <Form.Item
-          name="time"
-          label="Time"
-          rules={[{ required: true, message: "Please select a time!" }]}
-        >
-          <Select placeholder="Choose a time">
-            {predefinedTimes.map((time) => (
-              <Option
-                key={time}
-                value={time}
-                disabled={
-                  disabledTimes.includes(time) ||
-                  (selectedDate === today && time < currentTime)
-                }
-              >
-                {time}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item> */}
 
         <Form.Item
           name="description"
