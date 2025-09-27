@@ -47,7 +47,6 @@ const appointmentSchema = new Schema(
     },
     slot: {
       type: String,
-      required: true,
     },
     // time: {
     //   type: String,

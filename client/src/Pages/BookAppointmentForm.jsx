@@ -21,6 +21,7 @@ const BookAppointmentForm = () => {
   const navigate = useNavigate();
   const today = dayjs().format("YYYY-MM-DD");
 
+  // fetch all appointments
   const fetchAppointments = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -68,6 +69,7 @@ const BookAppointmentForm = () => {
     fetchAppointments();
   }, [form]);
 
+  // autofill enrollment ID based on platform
   const handlePlatformChange = (value) => {
     if (value === "amazon") {
       form.setFieldValue(
@@ -89,6 +91,7 @@ const BookAppointmentForm = () => {
     form.setFieldValue("slot", null);
   };
 
+  // submit appointment
   const onFinish = async (values) => {
     const formattedValues = {
       ...values,
@@ -120,13 +123,13 @@ const BookAppointmentForm = () => {
     }
   };
 
-  // Get already taken slots for today & selected manager
+  // get already taken slots for today (check createdAt)
   const getDisabledSlots = () => {
     if (!selectedManager) return [];
     return appointments
       .filter(
         (appointment) =>
-          dayjs(appointment.date).format("YYYY-MM-DD") === today &&
+          dayjs(appointment.createdAt).format("YYYY-MM-DD") === today &&
           appointment.manager === selectedManager
       )
       .map((appointment) => appointment.slot);
