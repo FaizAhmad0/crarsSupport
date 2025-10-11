@@ -10,6 +10,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ManagerAppointment = () => {
   const [appointments, setAppointments] = useState([]);
+  console.log(appointments)
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); // Search state
   const [dateFilter, setDateFilter] = useState("all"); // Date filter state
@@ -199,6 +200,12 @@ const ManagerAppointment = () => {
           <div className="flex items-center">N/A</div>
         );
       },
+    },
+    {
+      title: "Slot",
+      dataIndex: "slot",
+      key: "slot",
+      ellipsis: true,
     },
     {
       title: "Status",

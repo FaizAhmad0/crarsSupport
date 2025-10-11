@@ -96,7 +96,7 @@ const LoginForm = () => {
         >
           <div className="login-logo">
             <img
-              src="https://support.saumiccraft.com/wp-content/uploads/2023/05/logo-saumic-new.png"
+              src="./logo.png"
               alt="Logo"
             />
           </div>
