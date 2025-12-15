@@ -107,7 +107,8 @@ const BookAppointmentForm = () => {
 
       if (response.status === 201 || response.status === 200) {
         message.success(
-          "Your appointment has been successfully booked. Our manager will contact you within 24 to 48 hours."
+          response?.data?.message ||
+            "Your appointment has been successfully booked. Our manager will contact you within 24 to 48 hours."
         );
         form.resetFields();
         navigate("/appointments");
@@ -119,7 +120,7 @@ const BookAppointmentForm = () => {
         "Error booking appointment:",
         error.response?.data?.message || error.message
       );
-      message.error("Failed to book the appointment. Please try again later.");
+      message.error(error.response?.data?.message || "Slot is already booked");
     }
   };
 
