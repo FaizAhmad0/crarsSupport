@@ -26,7 +26,7 @@ const BookAppointmentForm = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${backendUrl}/admin/getallappointments`,
+        `${backendUrl}/admin/gettodayappointments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

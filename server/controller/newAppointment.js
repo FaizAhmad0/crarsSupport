@@ -22,12 +22,8 @@ module.exports = async (req, res) => {
       });
     }
 
-    // const appData = new Appointment({
-    //   slot,
-    //   manager,
-    //   date: new Date(),
-    // });
-    // await appData.save();
+    const appData = new Appointment(req.body);
+    await appData.save();
 
     res.status(200).json({
       message:
