@@ -10,7 +10,7 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ManagerAppointment = () => {
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments)
+  console.log(appointments);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); // Search state
   const [dateFilter, setDateFilter] = useState("all"); // Date filter state
@@ -275,6 +275,7 @@ const ManagerAppointment = () => {
               <Option value="thisMonth">This Month</Option>
               <Option value="thisYear">This Year</Option>
             </Select>
+            <Button>Total Appointments: {filteredAppointments.length}</Button>
           </div>
         </div>
 

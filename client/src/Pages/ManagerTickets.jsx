@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Skeleton, Table, Tag, Input, Select } from "antd";
+import { Skeleton, Table, Tag, Input, Select, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import ManagerLayout from "../Layouts/ManagerLayout";
 
@@ -208,6 +208,7 @@ const ManagerTickets = () => {
               <Option value="thisMonth">This Month</Option>
               <Option value="thisYear">This Year</Option>
             </Select>
+            <Button>Total Tickets: {filteredTickets.length}</Button>
           </div>
         </div>
 
