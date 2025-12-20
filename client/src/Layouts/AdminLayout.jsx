@@ -101,10 +101,7 @@ const AdminLayout = ({ children }) => {
 
         {/* Main Content */}
         <main className="flex-1 p-4 lg:p-6 overflow-x-auto overflow-y-auto  mt-16 lg:mt-0">
-          <Snowfall
-            snowflakeCount={500}
-            style={{ zIndex: 9999, position: "fixed" }}
-          />
+          <Snowfall snowflakeCount={500} />
           {children}
         </main>
       </div>
