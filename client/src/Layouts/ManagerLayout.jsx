@@ -3,6 +3,7 @@ import Navbar from "../Components/Navbar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import EventIcon from "@mui/icons-material/Event";
+import Snowfall from "react-snowfall";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -115,6 +116,10 @@ const ManagerLayout = ({ children }) => {
 
         {/* Main Content */}
         <main className="flex-1 p-4 lg:p-6 overflow-x-auto overflow-y-auto mt-16 lg:mt-0">
+          <Snowfall
+            snowflakeCount={500}
+            style={{ zIndex: 9999, position: "fixed" }}
+          />
           {children}
         </main>
       </div>
