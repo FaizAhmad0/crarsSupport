@@ -1,101 +1,103 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { CalendarDays, Sparkles } from "lucide-react";
 
-const colors = ["#FF5733", "#FFC300", "#DAF7A6", "#FF33F6", "#33FFF5"];
-
-const GulalBlast = () => {
-  return colors.map((color, index) => (
-    <motion.div
-      key={index}
-      className="absolute w-16 h-16 rounded-full"
-      style={{ backgroundColor: color }}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{
-        opacity: 1,
-        scale: [1, 2, 3],
-        x: [(Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1500],
-        y: [(Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1500],
-      }}
-      transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.3 }}
-    />
-  ));
-};
-
-const Fireworks = () => {
-  return Array(10)
-    .fill(0)
-    .map((_, index) => (
-      <motion.div
-        key={index}
-        className="absolute w-8 h-8 bg-yellow-300 rounded-full shadow-lg"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 2, rotate: 720, y: -500 }}
-        transition={{ duration: 1.2, repeat: Infinity, delay: index * 0.5 }}
-      />
-    ));
-};
-
-const Confetti = () => {
-  return Array(100)
-    .fill(0)
-    .map((_, index) => (
-      <motion.div
-        key={index}
-        className="absolute w-3 h-3 rounded-full"
-        style={{ backgroundColor: colors[index % colors.length] }}
-        initial={{
-          opacity: 0,
-          y: -50,
-          x: (Math.random() - 0.5) * 800,
-          scale: 0.5,
-        }}
-        animate={{
-          opacity: 1,
-          y: 800,
-          x: (Math.random() - 0.5) * 1600,
-          rotate: 720,
-        }}
-        transition={{ duration: 3, repeat: Infinity, delay: index * 0.1 }}
-      />
-    ));
-};
-
-const Holiday = () => {
+export default function Holiday() {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white p-5 overflow-hidden">
-      <h1 className="text-6xl font-extrabold mb-4 animate-bounce">
-        Happy Holi! 🎨🌸
-      </h1>
-      <p className="text-lg text-center max-w-2xl animate-pulse">
-        Holi is a festival of colors, joy, and togetherness! Celebrate from
-        today until the 17th with vibrant colors, delicious sweets, and
-        happiness all around. May this festival bring prosperity, positivity,
-        and love into your life. 🌈🎉
-      </p>
-      <div className="mt-6 p-4 bg-white text-black rounded-lg shadow-lg">
-        <h2 className="text-2xl font-semibold">Festival Duration: </h2>
-        <p className="text-lg">March {new Date().getDate()} - March 17</p>
-      </div>
-      <p className="mt-4 text-lg font-semibold animate-wiggle">
-        You can book appointments from the 17th. Enjoy Holi! 🎊
-      </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-yellow-50 to-red-100 overflow-hidden">
+      {/* Floating decorative elements */}
+      <motion.div
+        className="absolute top-10 left-10 text-orange-300"
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        <Sparkles size={40} />
+      </motion.div>
 
-      {/* Full-Page Celebration Effects */}
-      <div className="absolute inset-0 overflow-hidden flex flex-wrap">
-        <Confetti />
-      </div>
+      <motion.div
+        className="absolute bottom-10 right-10 text-yellow-300"
+        animate={{ y: [0, 20, 0] }}
+        transition={{ duration: 5, repeat: Infinity }}
+      >
+        <Sparkles size={50} />
+      </motion.div>
 
-      {/* Blasting Gulal Effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        <GulalBlast />
-      </div>
+      {/* Main Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="bg-white/90 backdrop-blur-xl shadow-2xl rounded-2xl p-10 max-w-xl text-center"
+      >
+        <motion.div
+          className="absolute top-5 right-5 text-orange-300"
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          <Sparkles size={40} />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-5 left-2 text-orange-300"
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          <Sparkles size={40} />
+        </motion.div>
+        {/* Header */}
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-3xl font-bold text-orange-600 mb-4"
+        >
+          🎉 Makar Sankranti Holiday 🎉
+        </motion.h1>
 
-      {/* Fireworks Effect */}
-      <div className="absolute inset-0 overflow-hidden">
-        <Fireworks />
-      </div>
+        {/* Message */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="text-black text-lg leading-relaxed"
+        >
+          Our Company Support Portal will remain temporarily closed in
+          observance of <span className="font-semibold">Makar Sankranti</span>.
+        </motion.p>
+
+        {/* Dates */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="flex items-center justify-center gap-3 mt-6 text-gray-800"
+        >
+          <CalendarDays className="text-orange-500" />
+          <span className="font-medium">14 January – 15 January</span>
+        </motion.div>
+
+        {/* Reopen Info */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.2, duration: 0.6 }}
+          className="mt-6 bg-orange-50 border border-orange-200 rounded-xl p-4"
+        >
+          <p className="text-orange-700 font-semibold">
+            The portal will reopen on{" "}
+            <span className="underline">16 January</span>.
+          </p>
+        </motion.div>
+
+        {/* Footer */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
+          className="mt-8 text-sm text-gray-500"
+        >
+          Thank you for your patience and warm wishes for the festive season.
+        </motion.p>
+      </motion.div>
     </div>
   );
-};
-
-export default Holiday;
+}
