@@ -9,7 +9,7 @@ const PORT = 8500;
 // Connect to MongoDB
 mongoose
   .connect(
-    "mongodb+srv://saumic:saumic123@cluster0.pxceo4x.mongodb.net/crm?retryWrites=true&w=majority&appName=Cluster0",
+    "mongodb+srv://saumic:saumicNewData@cluster0.4b4er14.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -31,8 +31,19 @@ const findUsersByBatch = async () => {
   }
 };
 
+const findUsersByUID = async () => {
+  try {
+    // Query the database to find users by batch
+    const users = await User.findOne({ uid: 4468 }); // Assumes `batch` is a field in the User model
+    console.log(users);
+  } catch (error) {
+    console.error("Error finding users:", error);
+    return [];
+  }
+};
+
 // Call the function with the batch value
-findUsersByBatch();
+// findUsersByUID();
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

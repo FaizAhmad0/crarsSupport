@@ -32,19 +32,19 @@ import ManagerComplaint from "./Pages/ManagerComplaint";
 import SupComplaints from "./Pages/SupComplaints";
 import AdminComplaints from "./Pages/AdminComplaints";
 import LoginForm from "./Pages/LoginForm";
+import NotFound from "./Pages/NotFound";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" exact element={<Holiday />} />
-          <Route path="/*" exact element={<Holiday />} />
+          <Route path="/" exact element={<Home />} />
 
-          {/* <Route path="/login" exact element={<LoginForm />} />
-          <Route path="/raise-ticket" exact element={<RaiseTicketForm />} /> */}
+          <Route path="/login" exact element={<LoginForm />} />
+          <Route path="/raise-ticket" exact element={<RaiseTicketForm />} />
 
-          {/* <Route element={<UserPrivateRoute />}>
+          <Route element={<UserPrivateRoute />}>
             <Route path="/userdash" exact element={<UserDash />} />
             <Route path="/user-tickets" exact element={<UserTickets />} />
             <Route path="/ticket/:ticketId" element={<TicketDetails />} />
@@ -52,9 +52,9 @@ function App() {
             <Route path="/appointments" element={<UserAppointment />} />
             <Route path="/file-complaint" element={<UserComplaint />} />
             <Route path="/complaints" element={<UserComplaints />} />
-          </Route> */}
+          </Route>
 
-          {/* <Route element={<ManagerPrivateRoute />}>
+          <Route element={<ManagerPrivateRoute />}>
             <Route path="/managerdash" element={<ManagerDash />} />
             <Route path="/manager-tickets" element={<ManagerTickets />} />
             <Route
@@ -70,22 +70,23 @@ function App() {
               element={<ManagerAppointment />}
             />
             <Route path="/manager-complaints" element={<ManagerComplaint />} />
-          </Route> */}
+          </Route>
 
-          {/* <Route element={<AdminPrivateRoute />}>
+          <Route element={<AdminPrivateRoute />}>
             <Route path="/admindash" element={<AdminDash />} />
             <Route path="/admin-tickets" element={<AllTickets />} />
             <Route path="/admin-appointment" element={<AllAppointment />} />
             <Route path="/admin-complaints" element={<AdminComplaints />} />
             <Route path="/admin/:ticketId" element={<AdminTckDetails />} />
-          </Route> */}
+          </Route>
 
-          {/* <Route element={<SupPrivateRoute />}>
+          <Route element={<SupPrivateRoute />}>
             <Route path="/supervisordash" element={<SupervisorDash />} />
             <Route path="/sup-tickets" element={<SuppTickets />} />
             <Route path="/sup-appointment" element={<SuppAppointments />} />
             <Route path="/sup-complaints" element={<SupComplaints />} />
-          </Route> */}
+          </Route>
+          <Route path="/*" exact element={<NotFound />} />
         </Routes>
       </Router>
     </>
