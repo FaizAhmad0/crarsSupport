@@ -10,7 +10,6 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ManagerAppointment = () => {
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); // Search state
   const [dateFilter, setDateFilter] = useState("all"); // Date filter state
@@ -33,7 +32,7 @@ const ManagerAppointment = () => {
             Authorization: `Bearer ${token}`,
           },
           params: { name },
-        }
+        },
       );
 
       const sortedAppointments = response.data.appointments.sort((a, b) => {
@@ -46,7 +45,7 @@ const ManagerAppointment = () => {
     } catch (error) {
       console.error(
         "Error fetching appointments:",
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error.message,
       );
     } finally {
       setLoading(false);
@@ -99,7 +98,7 @@ const ManagerAppointment = () => {
         appointment.appointmentId
           ?.toString()
           .toLowerCase()
-          .includes(searchText.toLowerCase())
+          .includes(searchText.toLowerCase()),
     )
     .filter(filterByDate);
 
@@ -118,7 +117,7 @@ const ManagerAppointment = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       message.success("Appointment marked as completed!");
@@ -126,7 +125,7 @@ const ManagerAppointment = () => {
     } catch (error) {
       message.error(
         error.response?.data?.message ||
-          "Failed to mark appointment as completed."
+          "Failed to mark appointment as completed.",
       );
     }
   };
@@ -223,10 +222,10 @@ const ManagerAppointment = () => {
           status === "confirmed"
             ? "blue"
             : status === "Completed"
-            ? "green"
-            : status === "cancelled"
-            ? "red"
-            : "orange";
+              ? "green"
+              : status === "cancelled"
+                ? "red"
+                : "orange";
         return <Tag color={color}>{status}</Tag>;
       },
     },

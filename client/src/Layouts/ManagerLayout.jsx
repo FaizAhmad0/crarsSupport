@@ -3,10 +3,13 @@ import Navbar from "../Components/Navbar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import EventIcon from "@mui/icons-material/Event";
-import Snowfall from "react-snowfall";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { playNotificationSound } from "../Components/notificationSound.js";
+import "react-toastify/dist/ReactToastify.css";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ManagerLayout = ({ children }) => {
   const navigate = useNavigate();
@@ -38,6 +41,109 @@ const ManagerLayout = ({ children }) => {
     else if (path.includes("manager-complaints")) setActiveLink("complaints");
     else if (path.includes("manager-tickets")) setActiveLink("raise-ticket");
   }, [location]); // Run this effect whenever the location changes
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const sseUrl = `${backendUrl}/manager/notifications?token=${token}`;
+    console.log("Connecting SSE to:", sseUrl);
+
+    const eventSource = new EventSource(sseUrl, { withCredentials: true });
+
+    eventSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log(data);
+
+        if (data.type === "CONNECTED") {
+          console.log("SSE connected successfully!");
+          return;
+        }
+
+        switch (data.type) {
+          case "NEW_APPOINTMENT":
+            toast.info(
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  fontSize: "0.9rem",
+                  lineHeight: 1.4,
+                }}
+              >
+                {/* Title */}
+                <div
+                  style={{
+                    fontWeight: 600,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  <span role="img" aria-label="calendar">
+                    📅
+                  </span>
+                  New Appointment Scheduled
+                </div>
+
+                {/* Booking info – ONE LINE */}
+                <div
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  <strong>{data.user}</strong> booked{" "}
+                  <strong>{data.slot}</strong>
+                </div>
+
+                {/* Footer note */}
+                <div
+                  style={{
+                    color: "#6b7280",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  Appointment booked. Action required.
+                </div>
+              </div>,
+              {
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                position: "bottom-right",
+                onOpen: playNotificationSound,
+              },
+            );
+
+
+            break;
+          case "NEW_COMPLAINT":
+            toast.error("⚠️ New complaint submitted");
+            break;
+          default:
+            console.log("Unknown SSE event:", data);
+        }
+      } catch (err) {
+        console.error("Invalid SSE data:", event.data);
+      }
+    };
+
+    eventSource.onerror = (err) => {
+      console.error("SSE connection error:", err);
+      eventSource.close();
+    };
+
+    return () => {
+      console.log("Closing SSE connection");
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <div className="flex pt-4 lg:pt-20 h-screen flex-col lg:flex-row">
@@ -116,7 +222,14 @@ const ManagerLayout = ({ children }) => {
 
         {/* Main Content */}
         <main className="flex-1 p-4 lg:p-6 overflow-x-auto overflow-y-auto mt-16 lg:mt-0">
-          <Snowfall snowflakeCount={500} />
+          {/* <Snowfall snowflakeCount={500} /> */}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={4000}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+          />
           {children}
         </main>
       </div>

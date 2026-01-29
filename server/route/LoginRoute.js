@@ -26,9 +26,13 @@ router.post("/", async (req, res) => {
   // }
 
   if (user.role === "user") {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      },
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -56,7 +60,7 @@ router.post("/", async (req, res) => {
     await OtpToken.findOneAndUpdate(
       { uid },
       { otp, expiresAt },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     const transporter = nodemailer.createTransport({
@@ -105,9 +109,13 @@ router.post("/verify-otp", async (req, res) => {
   const user = await User.findOne({ uid });
   if (!user) return res.status(404).json({ error: "User not found" });
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    },
+  );
 
   res.cookie("token", token, {
     httpOnly: true,
