@@ -59,8 +59,12 @@ router.get("/notifications", (req, res) => {
   res.write(`data: ${JSON.stringify({ type: "CONNECTED" })}\n\n`);
   console.log("working perfactly");
 
+  const keepAlive = setInterval(() => {
+    res.write(`event: ping\ndata: {}\n\n`);
+  }, 25000);
+
   req.on("close", () => {
-    removeManager(managerId);
+    clearInterval(keepAlive);
   });
 });
 
