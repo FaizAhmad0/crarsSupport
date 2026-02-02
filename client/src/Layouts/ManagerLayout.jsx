@@ -4,6 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import EventIcon from "@mui/icons-material/Event";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -13,13 +14,13 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const ManagerLayout = ({ children }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // To get the current route
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("dashboard");
 
   const handleLogoutClick = () => {
     localStorage.clear();
-    navigate("/"); // Redirect to home after logout
+    navigate("/");
   };
 
   const toggleSidebar = () => {
@@ -27,8 +28,8 @@ const ManagerLayout = ({ children }) => {
   };
 
   const handleLinkClick = (link, path) => {
-    setActiveLink(link); // Update active link when clicked
-    navigate(path); // Navigate without reloading
+    setActiveLink(link);
+    navigate(path);
   };
 
   // Update active link based on the current path
@@ -40,6 +41,7 @@ const ManagerLayout = ({ children }) => {
       setActiveLink("appointments");
     else if (path.includes("manager-complaints")) setActiveLink("complaints");
     else if (path.includes("manager-tickets")) setActiveLink("raise-ticket");
+    else if (path.includes("/query-dash")) setActiveLink("qdb");
   }, [location]); // Run this effect whenever the location changes
 
   useEffect(() => {
@@ -121,7 +123,6 @@ const ManagerLayout = ({ children }) => {
               },
             );
 
-
             break;
           case "NEW_COMPLAINT":
             toast.error("⚠️ New complaint submitted");
@@ -185,6 +186,11 @@ const ManagerLayout = ({ children }) => {
               name: "Raised Tickets",
               icon: <ConfirmationNumberIcon />,
               path: "/manager-raisedtickets",
+            },
+            {
+              name: "QDB",
+              icon: <DashboardCustomizeIcon />,
+              path: "/query-dash",
             },
             {
               name: "Logout",

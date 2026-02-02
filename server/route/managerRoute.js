@@ -24,15 +24,17 @@ const markAppComplete = require("../controller/markAppComplete");
 const getAllManagerComplaints = require("../controller/getAllManagerComplaints");
 
 const { addManager, removeManager } = require("../sseManager");
+const { addQuery } = require("../controller/addQuery");
+const { getQueries } = require("../controller/getQueries");
+const { markSolved } = require("../controller/markSolved");
+const { addFeedback } = require("../controller/addFeedback");
 
-// 🔔 MANAGER SSE CONNECTION
+// MANAGER SSE CONNECTION
 router.get("/notifications", (req, res) => {
   const token =
     req.cookies?.token ||
     req.query.token ||
     req.headers.authorization?.split(" ")[1];
-
-    console.log(token)
 
   if (!token) return res.status(401).end();
 
@@ -57,7 +59,6 @@ router.get("/notifications", (req, res) => {
   addManager(managerId, res);
 
   res.write(`data: ${JSON.stringify({ type: "CONNECTED" })}\n\n`);
-  console.log("working perfactly");
 
   const keepAlive = setInterval(() => {
     res.write(`event: ping\ndata: {}\n\n`);
@@ -72,6 +73,10 @@ router.get("/notifications", (req, res) => {
 router.get("/getmanagerticket", getAllMangerTicket);
 router.get("/getallappointments", getAllManagerAppointment);
 router.get("/getallcomplaints", getAllManagerComplaints);
+router.get("/get-queries", getQueries);
 router.post("/markappointmentcompleted", markAppComplete);
+router.post("/add-query", addQuery);
+router.put("/mark-solved", markSolved);
+router.put("/add-feedback", addFeedback);
 
 module.exports = router;

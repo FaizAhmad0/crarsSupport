@@ -3,6 +3,8 @@ import Navbar from "../Components/Navbar";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import EventIcon from "@mui/icons-material/Event";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate, useLocation } from "react-router-dom";
 import Snowfall from "react-snowfall";
@@ -34,6 +36,7 @@ const SupervisorLayout = ({ children }) => {
     else if (path.includes("sup-tickets")) setActiveLink("tickets");
     else if (path.includes("sup-appointment")) setActiveLink("appointments");
     else if (path.includes("sup-complaints")) setActiveLink("complaints");
+    else if (path.includes("/sp-query-dash")) setActiveLink("qdb");
   }, [location]); // Run this effect whenever the location changes
 
   return (
@@ -67,7 +70,11 @@ const SupervisorLayout = ({ children }) => {
               icon: <EventIcon />,
               path: "/sup-complaints",
             },
-
+            {
+              name: "QDB",
+              icon: <DashboardCustomizeIcon />,
+              path: "/sp-query-dash",
+            },
             {
               name: "Logout",
               icon: <LogoutIcon />,

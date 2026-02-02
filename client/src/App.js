@@ -33,6 +33,8 @@ import SupComplaints from "./Pages/SupComplaints";
 import AdminComplaints from "./Pages/AdminComplaints";
 import LoginForm from "./Pages/LoginForm";
 import NotFound from "./Pages/NotFound";
+import QueryDash from "./Pages/QueryDash";
+import SpQueryDash from "./Pages/SpQueryDash";
 
 function App() {
   return (
@@ -70,6 +72,7 @@ function App() {
               element={<ManagerAppointment />}
             />
             <Route path="/manager-complaints" element={<ManagerComplaint />} />
+            <Route path="/query-dash" element={<QueryDash />} />
           </Route>
 
           <Route element={<AdminPrivateRoute />}>
@@ -85,6 +88,7 @@ function App() {
             <Route path="/sup-tickets" element={<SuppTickets />} />
             <Route path="/sup-appointment" element={<SuppAppointments />} />
             <Route path="/sup-complaints" element={<SupComplaints />} />
+            <Route path="/sp-query-dash" element={<SpQueryDash />} />
           </Route>
           <Route path="/*" exact element={<NotFound />} />
         </Routes>

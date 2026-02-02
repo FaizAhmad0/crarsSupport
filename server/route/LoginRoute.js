@@ -119,7 +119,7 @@ router.post("/verify-otp", async (req, res) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: false, // Set true in production with HTTPS
+    secure: false,
     sameSite: "Lax",
     maxAge: 24 * 60 * 60 * 1000,
   });
