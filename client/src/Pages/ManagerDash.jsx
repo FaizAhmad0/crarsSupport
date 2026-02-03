@@ -10,6 +10,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import QuerySummaryCards from "../Components/QuerySummaryCards";
 
 const { Text } = Typography;
 
@@ -267,6 +268,7 @@ const ManagerDash = () => {
             </Card>
           </Col>
         </Row>
+        <QuerySummaryCards/>
       </div>
     </ManagerLayout>
   );

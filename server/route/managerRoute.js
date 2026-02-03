@@ -28,6 +28,7 @@ const { addQuery } = require("../controller/addQuery");
 const { getQueries } = require("../controller/getQueries");
 const { markSolved } = require("../controller/markSolved");
 const { addFeedback } = require("../controller/addFeedback");
+const { getQuerySummary } = require("../controller/getQuerySummary");
 
 // MANAGER SSE CONNECTION
 router.get("/notifications", (req, res) => {
@@ -74,6 +75,7 @@ router.get("/getmanagerticket", getAllMangerTicket);
 router.get("/getallappointments", getAllManagerAppointment);
 router.get("/getallcomplaints", getAllManagerComplaints);
 router.get("/get-queries", getQueries);
+router.get("/query-summary", getQuerySummary);
 router.post("/markappointmentcompleted", markAppComplete);
 router.post("/add-query", addQuery);
 router.put("/mark-solved", markSolved);

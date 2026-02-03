@@ -100,7 +100,7 @@ const QueryDash = () => {
         <h1
           style={{
             fontWeight: 700,
-            fontSize: 20,
+            fontSize: '28px',
             background: "linear-gradient(90deg, red, blue)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",

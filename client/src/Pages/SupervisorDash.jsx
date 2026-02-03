@@ -10,6 +10,7 @@ import { UserOutlined } from "@ant-design/icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
+import QuerySummaryCards from "../Components/QuerySummaryCards";
 
 const { Text } = Typography;
 
@@ -45,7 +46,7 @@ const SupervisorDash = () => {
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { name },
-          }
+          },
         );
         setAppointments(appointmentsResponse.data.appointments);
 
@@ -55,7 +56,7 @@ const SupervisorDash = () => {
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { manager: name },
-          }
+          },
         );
         setTickets(ticketsResponse.data.tickets);
       } catch (err) {
@@ -172,7 +173,7 @@ const SupervisorDash = () => {
                     Completed:{" "}
                     {
                       appointments.filter(
-                        (appointment) => appointment.status === "Completed"
+                        (appointment) => appointment.status === "Completed",
                       ).length
                     }
                   </Text>
@@ -221,7 +222,7 @@ const SupervisorDash = () => {
                     Pending Appointments:{" "}
                     {
                       appointments.filter(
-                        (appointment) => appointment.status !== "Completed"
+                        (appointment) => appointment.status !== "Completed",
                       ).length
                     }
                   </Text>
@@ -256,6 +257,7 @@ const SupervisorDash = () => {
             </Card>
           </Col>
         </Row>
+        <QuerySummaryCards />
       </div>
     </SupervisorLayout>
   );
