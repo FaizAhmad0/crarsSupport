@@ -32,7 +32,7 @@ const SupervisorLayout = ({ children }) => {
   // Update active link based on the current path
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes("supervisordash")) setActiveLink("supervisordash");
+    if (path.includes("supervisordash")) setActiveLink("dashboard");
     else if (path.includes("sup-tickets")) setActiveLink("tickets");
     else if (path.includes("sup-appointment")) setActiveLink("appointments");
     else if (path.includes("sup-complaints")) setActiveLink("complaints");
@@ -40,7 +40,7 @@ const SupervisorLayout = ({ children }) => {
   }, [location]); // Run this effect whenever the location changes
 
   return (
-    <div className="flex pt-4 lg:pt-20 h-screen flex-col lg:flex-row">
+    <div className="flex pt-4 lg:pt-20 h-screen flex-col lg:flex-row overflow-x-hidden">
       {/* Sidebar */}
       <div
         className={`fixed lg:relative top-0 left-0 h-full w-48 bg-white shadow-lg transform ${
@@ -105,12 +105,12 @@ const SupervisorLayout = ({ children }) => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 flex flex-col bg-gray-100">
+      <div className="flex-1 min-w-0 flex flex-col bg-gray-100 overflow-hidden">
         {/* Navbar */}
         <Navbar toggleSidebar={toggleSidebar} />
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-y-auto mt-16 lg:mt-0">
+        <main className="flex-1 p-4 lg:p-6 overflow-y-auto overflow-x-hidden mt-16 lg:mt-0">
           <Snowfall snowflakeCount={500} />
           {children}
         </main>

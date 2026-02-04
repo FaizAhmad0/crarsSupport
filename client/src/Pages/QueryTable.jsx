@@ -127,7 +127,7 @@ const QueryTable = ({ status, reloadTrigger }) => {
       dataIndex: "createdAt",
       render: (d) => dayjs(d).format("DD/MM/YYYY"),
     },
-    { title: "Enrollment", dataIndex: "enrollment" },
+    { title: "Enrollment", dataIndex: "enrollment", fixed: "left" },
     { title: "Concern", dataIndex: "concern" },
     { title: "Department", dataIndex: "department" },
     { title: "Source", dataIndex: "source" },
@@ -139,13 +139,20 @@ const QueryTable = ({ status, reloadTrigger }) => {
     },
     { title: "RaisedBy", dataIndex: "raisedBy" },
     { title: "RaisedTo", dataIndex: "raisedTo" },
+    ...(status == "Solved"
+      ? [
+          {
+            title: "Solved Via",
+            dataIndex: "solvedVia",
+          },
+        ]
+      : []),
     {
       title: "Deadline",
       dataIndex: "deadline",
       render: (d) => dayjs(d).format("DD MMM YYYY"),
     },
 
-    // ✅ ADD ACTION COLUMN ONLY IF NOT FEEDBACK
     ...(status !== "Feedback"
       ? [
           {
