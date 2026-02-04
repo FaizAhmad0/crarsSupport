@@ -17,7 +17,7 @@ const SupervisorLayout = ({ children }) => {
 
   const handleLogoutClick = () => {
     localStorage.clear();
-    navigate("/"); // Redirect to home after logout
+    navigate("/"); 
   };
 
   const toggleSidebar = () => {
@@ -25,8 +25,8 @@ const SupervisorLayout = ({ children }) => {
   };
 
   const handleLinkClick = (link, path) => {
-    setActiveLink(link); // Update active link when clicked
-    navigate(path); // Navigate without reloading
+    setActiveLink(link); 
+    navigate(path);
   };
 
   // Update active link based on the current path
