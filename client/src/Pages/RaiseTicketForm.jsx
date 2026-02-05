@@ -14,7 +14,6 @@ const RaiseTicketForm = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [managers, setManagers] = useState([]);
-  console.log(managers);
 
   useEffect(() => {
     AOS.init({
@@ -42,7 +41,7 @@ const RaiseTicketForm = () => {
       } catch (error) {
         console.error(
           "Error fetching managers:",
-          error.response?.data?.message || error.message
+          error.response?.data?.message || error.message,
         );
         message.error("Unable to fetch managers. Please try again later.");
       }
@@ -64,12 +63,12 @@ const RaiseTicketForm = () => {
     if (value === "amazon") {
       form.setFieldValue(
         "enrollmentId",
-        localStorage.getItem("enrollmentIdAmazon")
+        localStorage.getItem("enrollmentIdAmazon"),
       );
     } else if (value === "website") {
       form.setFieldValue(
         "enrollmentId",
-        localStorage.getItem("enrollmentIdWebsite")
+        localStorage.getItem("enrollmentIdWebsite"),
       );
     } else {
       form.setFieldValue("enrollmentId", ""); // Clear enrollmentId for dispatch or accounts
@@ -91,7 +90,7 @@ const RaiseTicketForm = () => {
       // Make POST request to the backend
       const response = await axios.post(
         `${backendUrl}/user/newticket`,
-        formattedValues
+        formattedValues,
       );
 
       if (response.status === 201 || response.status === 200) {

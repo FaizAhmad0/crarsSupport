@@ -20,7 +20,6 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const SupComplaints = () => {
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); // Search state
   const [dateFilter, setDateFilter] = useState("all"); // Date filter state
@@ -44,14 +43,14 @@ const SupComplaints = () => {
       });
 
       const sortedAppointments = response.data.appointments.sort(
-        (a, b) => new Date(b.date) - new Date(a.date)
+        (a, b) => new Date(b.date) - new Date(a.date),
       );
 
       setAppointments(sortedAppointments);
     } catch (error) {
       console.error(
         "Error fetching appointments:",
-        error.response?.data?.message || error.message
+        error.response?.data?.message || error.message,
       );
     } finally {
       setLoading(false);
@@ -79,7 +78,7 @@ const SupComplaints = () => {
     const createdAtDate = new Date(
       createdAt.getFullYear(),
       createdAt.getMonth(),
-      createdAt.getDate()
+      createdAt.getDate(),
     );
 
     switch (dateFilter) {
@@ -119,13 +118,6 @@ const SupComplaints = () => {
         appointment.caseId ? appointment.caseId.toString() : ""
       }`.toLowerCase();
 
-      console.log("Checking:", {
-        enrollment: appointment.enrollment,
-        caseId: appointment.caseId,
-        modifiedCaseId,
-        searchText,
-      });
-
       return (
         appointment.enrollment?.toLowerCase().includes(searchLower) ||
         modifiedCaseId.includes(searchLower)
@@ -148,7 +140,7 @@ const SupComplaints = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       message.success("Complaint marked as Closed!");
@@ -156,7 +148,7 @@ const SupComplaints = () => {
     } catch (error) {
       message.error(
         error.response?.data?.message ||
-          "Failed to mark complaint as completed."
+          "Failed to mark complaint as completed.",
       );
     }
   };
@@ -252,10 +244,10 @@ const SupComplaints = () => {
           status === "confirmed"
             ? "blue"
             : status === "Completed"
-            ? "green"
-            : status === "cancelled"
-            ? "red"
-            : "orange";
+              ? "green"
+              : status === "cancelled"
+                ? "red"
+                : "orange";
         return <Tag color={color}>{status}</Tag>;
       },
     },

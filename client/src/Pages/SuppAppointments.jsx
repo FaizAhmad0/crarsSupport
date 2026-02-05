@@ -10,7 +10,6 @@ const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const SuppAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-  console.log(appointments);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState(""); // Search state
   const [dateFilter, setDateFilter] = useState("all"); // Date filter state
