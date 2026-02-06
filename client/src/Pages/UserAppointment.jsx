@@ -47,7 +47,6 @@ const UserAppointment = () => {
         }
       );
 
-      // Sort appointments in descending order by date
       const sortedAppointments = response.data.appointments.sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
