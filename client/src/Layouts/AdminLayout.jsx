@@ -9,13 +9,13 @@ import Snowfall from "react-snowfall";
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // To get the current route
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("dashboard");
 
   const handleLogoutClick = () => {
     localStorage.clear();
-    navigate("/"); // Redirect to home after logout
+    navigate("/");
   };
 
   const toggleSidebar = () => {

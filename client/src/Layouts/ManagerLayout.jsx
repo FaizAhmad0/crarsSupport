@@ -90,7 +90,6 @@ const ManagerLayout = ({ children }) => {
                   New Appointment Scheduled
                 </div>
 
-                {/* Booking info – ONE LINE */}
                 <div
                   style={{
                     whiteSpace: "nowrap",
@@ -125,7 +124,7 @@ const ManagerLayout = ({ children }) => {
 
             break;
           case "NEW_COMPLAINT":
-            toast.error("⚠️ New complaint submitted");
+            toast.error("New complaint submitted");
             break;
           default:
             console.log("Unknown SSE event:", data);
