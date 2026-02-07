@@ -1,37 +1,23 @@
-const jwt = require("jsonwebtoken")
-const User = require("../models/User.js")
+const jwt = require("jsonwebtoken");
+const User = require("../model/userModel");
 
-const middleware = async (req, res, next) => {
-  const token = req.get("Authorization");
+const auth = async (req, res, next) => {
+  const token = req.cookies.token;
 
-  if (!token) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-
-  let decodedToken;
-  try {
-    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (err) {
-    return res.status(401).json({ error: "Token Expired" });
-  }
-
-  if (!decodedToken) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+  if (!token) return res.status(401).json({ error: "Not authenticated" });
 
   try {
-    const user = await User.findById(decodedToken.id);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
 
-    if (!user) {
-      return res.json({ error: "User not found" });
+    if (!user || user.tokenVersion !== decoded.tokenVersion) {
+      return res.status(401).json({ error: "Invalid token or logged out" });
     }
-
     req.user = user;
+    next();
   } catch (err) {
-    return res.status(500).json({ error: "Not authenticated" });
+    return res.status(401).json({ error: "Token expired or invalid" });
   }
-
-  next();
 };
 
-export default middleware;
+module.exports = auth;
